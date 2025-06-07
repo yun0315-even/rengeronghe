@@ -15,8 +15,7 @@ class HandDrawingManager {
         this.smoothingFactor = 0.3; // 平滑因子
         this.paths = []; // 存储所有路径
         this.isPaused = false; // 是否暂停绘制
-        this.frozenImage = null; // 存储定格后的图像
-        
+        this.frozenImage = null; // 存储定格后的图像123
         this.init();
     }
 
