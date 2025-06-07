@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bgMusic.loop = true;  // 确保音乐循环播放
     
     // 尝试自动播放音乐
-    function tryPlayMusic() {
+    function tryPlayMusic() {  
         bgMusic.play().then(() => {
             console.log('Background music started automatically');
         }).catch(error => {
