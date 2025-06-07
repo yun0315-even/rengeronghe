@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>图生视频API测试</title>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+  <h2>图生视频API测试</h2>
+  <label>AK: <input id="ak" value="AKLTMmU2NGQ5MjAzNmFlNDU3ODk4MjljMjI4YWI4MjExZTk"></label><br>
+  <label>SK: <input id="sk" value="SKLTMmU2NGQ5MjAzNmFlNDU3ODk4MjljMjI4YWI4MjExZTk"></label><br>
+  <label>关键词: <input id="prompt" value="一个美丽的女孩"></label><br>
+  <label>图片URL: <input id="image_url" value="https://img.zcool.cn/community/010000000000000000000000000000.jpg"></label><br>
+  <label>比例: <input id="aspect_ratio" value="16:9"></label><br>
+  <button id="submitBtn">提交任务</button>
+  <pre id="result"></pre>
+  <script type="module">
+    import { oneStepImageToVideo } from './js/jimeng.js';
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('submitBtn').onclick = async function() {
+        const ak = document.getElementById('ak').value;
+        const sk = document.getElementById('sk').value;
+        const image_url = document.getElementById('image_url').value;
+        const prompt = document.getElementById('prompt').value;
+        const aspect_ratio = document.getElementById('aspect_ratio').value;
+        document.getElementById('result').textContent = '请求中...';
+        try {
+          const videoUrl = await oneStepImageToVideo({
+            imageUrl: image_url,
+            prompt,
+            ak,
+            sk,
+            aspect_ratio
+          });
+          document.getElementById('result').innerHTML =
+            '视频地址：<a href="' + videoUrl + '" target="_blank">' + videoUrl + '</a><br>' +
+            '<video src="' + videoUrl + '" controls style="max-width:100%"></video>';
+        } catch (e) {
+          document.getElementById('result').textContent = e.toString();
+        }
+      };
+    });
+  </script>
+</body>
+</html>

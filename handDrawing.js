@@ -244,7 +244,7 @@ class HandDrawingManager {
         this.ctx.shadowBlur = 0;
     }
 
-    saveImage() {
+    async saveImage() {
         try {
             // 创建临时画布来保存当前状态
             const tempCanvas = document.createElement('canvas');
@@ -293,15 +293,41 @@ class HandDrawingManager {
                 tempCtx.shadowBlur = 0;
             });
 
-            // 创建下载链接
-            const link = document.createElement('a');
+            // 上传图片到服务器
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-            link.download = `drawing_${timestamp}.png`;
-            link.href = tempCanvas.toDataURL('image/png');
-            link.click();
-
-            // 显示提示信息
-            this.showMessage('图片已保存！');
+            tempCanvas.toBlob(async (blob) => {
+                if (!blob) {
+                    this.showMessage('图片生成失败');
+                    return;
+                }
+                const file = new File([blob], `drawing_${timestamp}.png`, { type: 'image/png' });
+                try {
+                    // 动态引入uploadFile
+                    const { uploadFile } = await import('./js/upload.js');
+                    const res = await uploadFile(file);
+                    // 假设返回res.data.url或res.url
+                    const url = res.data?.url || res.url || '';
+                    this.uploadedImageUrl = url;
+                    if (url) {
+                        this.showMessage('图片已上传，地址：' + url);
+                        // 调用千问3图片解析，生成即梦关键词
+                        try {
+                            const { default: qianwen3ImageParse } = await import('./js/qianwen3.js');
+                            const keywords = await qianwen3ImageParse(url, '请用5个词描述这幅画的梦境关键词');
+                            this.dreamKeywords = keywords;
+                            this.showMessage('即梦关键词：' + keywords);
+                        } catch (e) {
+                            this.showMessage('即梦关键词生成失败');
+                            console.error('千问3解析失败', e);
+                        }
+                    } else {
+                        this.showMessage('图片上传成功，但未返回地址');
+                    }
+                } catch (e) {
+                    this.showMessage('图片上传失败');
+                    console.error('上传失败', e);
+                }
+            }, 'image/png');
         } catch (error) {
             console.error('Error saving image:', error);
             this.showMessage('保存图片失败，请重试');
