@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Qianwen3 图片解析测试</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    #result { margin-top: 20px; color: #333; }
+    input { width: 400px; padding: 6px; }
+    button { padding: 6px 16px; }
+  </style>
+</head>
+<body>
+  <h2>Qianwen3 图片解析测试</h2>
+  <input id="imgUrl" type="text" value="https://help-static-aliyun-doc.aliyuncs.com/file-manage-files/zh-CN/20241022/emyrja/dog_and_girl.jpeg" />
+  <button id="btn">确定</button>
+  <div id="result"></div>
+
+  <script type="module">
+    import qianwen3ImageParse from './qianwen3.js';
+
+    document.getElementById('btn').onclick = async function() {
+      const url = document.getElementById('imgUrl').value.trim();
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = '解析中...';
+      try {
+        const result = await qianwen3ImageParse(url);
+        resultDiv.textContent = '解析结果：' + result;
+      } catch (e) {
+        resultDiv.textContent = '接口调用失败：' + e;
+      }
+    };
+  </script>
+</body>
+</html> 
