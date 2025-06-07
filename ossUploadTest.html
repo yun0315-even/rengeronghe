@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSS图片上传测试</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script type="module">
+    import { uploadToOSS } from './js/ossUpload.js';
+    window.uploadToOSS = uploadToOSS;
+  </script>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    #progress { margin-top: 10px; }
+    #result { margin-top: 10px; color: green; }
+    #error { margin-top: 10px; color: red; }
+  </style>
+</head>
+<body>
+  <h2>阿里云OSS图片上传测试</h2>
+  <label for="fileInput">选择图片：</label>
+  <input type="file" id="fileInput" accept="image/*" title="请选择要上传的图片">
+  <button id="uploadBtn">上传</button>
+  <div id="progress"></div>
+  <div id="result"></div>
+  <div id="error"></div>
+  <script type="module">
+    const fileInput = document.getElementById('fileInput');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const progressDiv = document.getElementById('progress');
+    const resultDiv = document.getElementById('result');
+    const errorDiv = document.getElementById('error');
+
+    uploadBtn.onclick = async function() {
+      resultDiv.textContent = '';
+      errorDiv.textContent = '';
+      progressDiv.textContent = '';
+      const file = fileInput.files[0];
+      if (!file) {
+        errorDiv.textContent = '请选择图片';
+        return;
+      }
+      window.uploadToOSS(
+        file,
+        percent => progressDiv.textContent = `上传进度: ${percent}%`,
+        url => {
+          resultDiv.innerHTML = `上传成功: <a href='${url}' target='_blank'>${url}</a><br><img src='${url}' style='max-width:200px;'>`;
+        },
+        err => errorDiv.textContent = '上传失败: ' + err
+      );
+    };
+  </script>
+</body>
+</html> 

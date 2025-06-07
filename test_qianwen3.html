@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qianwen3 图片解析测试</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 40px; }
@@ -12,19 +13,23 @@
 </head>
 <body>
   <h2>Qianwen3 图片解析测试</h2>
-  <input id="imgUrl" type="text" value="https://help-static-aliyun-doc.aliyuncs.com/file-manage-files/zh-CN/20241022/emyrja/dog_and_girl.jpeg" />
+  <label for="imgUrl">图片URL：</label>
+  <input id="imgUrl" type="text" placeholder="请输入图片URL" value="https://help-static-aliyun-doc.aliyuncs.com/file-manage-files/zh-CN/20241022/emyrja/dog_and_girl.jpeg" />
+  <br><label for="question">问题：</label>
+  <input id="question" type="text" placeholder="请输入你的问题" style="width:400px;padding:6px;" value="图中描绘的是什么景象?" />
   <button id="btn">确定</button>
   <div id="result"></div>
 
   <script type="module">
-    import qianwen3ImageParse from './qianwen3.js';
+    import qianwen3ImageParse from './js/qianwen3.js';
 
     document.getElementById('btn').onclick = async function() {
       const url = document.getElementById('imgUrl').value.trim();
+      const question = document.getElementById('question').value.trim();
       const resultDiv = document.getElementById('result');
       resultDiv.textContent = '解析中...';
       try {
-        const result = await qianwen3ImageParse(url);
+        const result = await qianwen3ImageParse(url, question);
         resultDiv.textContent = '解析结果：' + result;
       } catch (e) {
         resultDiv.textContent = '接口调用失败：' + e;

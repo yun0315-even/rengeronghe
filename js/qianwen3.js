@@ -41,7 +41,7 @@ async function qianwen3ImageParse(imageUrl, question = '图中描绘的是什么
     }
     const data = await response.json();
     // 直接返回解析内容（字符串）
-    return data.choices?.[0]?.message?.content?.[0]?.text || '';
+    return data.choices?.[0]?.message?.content || '';
 }
 
 export default qianwen3ImageParse;
