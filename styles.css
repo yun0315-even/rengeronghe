@@ -1,0 +1,1852 @@
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Cinzel:wght@400;700&family=Quicksand:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; /* 隐藏默认光标 */
+}
+
+body {
+    font-family: 'Quicksand', 'Helvetica Neue', Arial, sans-serif;
+    color: #ffffff;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 导航样式 */
+.section-nav {
+    display: none;
+}
+
+.section-nav ul {
+    display: none;
+}
+
+.section-nav li {
+    display: none;
+}
+
+.section-nav a {
+    display: none;
+}
+
+.section-nav li.active a {
+    display: none;
+}
+
+/* 通用section样式 */
+.section {
+    background: rgba(41, 31, 71, 0.3) !important;
+    position: relative;
+    z-index: 1;
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 25%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 25%),
+        radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+    animation: backgroundShimmer 15s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.content {
+    text-align: center;
+    z-index: 1;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 0 32px rgba(255, 255, 255, 0.05);
+    animation: fadeIn 1.5s ease-out;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    position: relative;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 首页特定样式 */
+.title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: clamp(2rem, 4.8vw, 4.8rem);
+    margin-bottom: 1.2rem;
+    background: linear-gradient(45deg, #fff 20%, #ffd700 50%, #fff 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
+                 4px 4px 16px rgba(255, 215, 0, 0.3);
+    letter-spacing: 3px;
+    animation: titleGlow 3s ease-in-out infinite;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1rem, 1.8vw, 1.8rem);
+    margin-bottom: 2.5rem;
+    color: #e0e0e0;
+    letter-spacing: 2px;
+    font-weight: 400;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    animation: subtitlePulse 4s ease-in-out infinite;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+/* 关于部分样式 */
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.feature-cards {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* 特性部分样式 */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.feature-item {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* 联系部分样式 */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.contact-input {
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-family: inherit;
+}
+
+textarea.contact-input {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.contact-btn {
+    padding: 1rem;
+    background: linear-gradient(45deg, #4a90e2, #67b26f);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.contact-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* 按钮样式 */
+.start-btn {
+    font-family: 'Quicksand', sans-serif;
+    padding: 1.2rem 4rem;
+    font-size: clamp(1rem, 1.4vw, 1.4rem);
+    background: linear-gradient(45deg, #4a90e2, #67b26f);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4);
+}
+
+/* 动画 */
+@keyframes titleGlow {
+    0%, 100% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
+                     4px 4px 16px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
+                     4px 4px 24px rgba(255, 215, 0, 0.5);
+    }
+}
+
+@keyframes subtitlePulse {
+    0%, 100% {
+        opacity: 0.9;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .content {
+        padding: 2rem;
+        margin: 0 1rem;
+    }
+
+    .title {
+        font-size: 3.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.4rem;
+    }
+    
+    .feature-cards {
+        flex-direction: column;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 自定义光标样式 */
+.custom-cursor {
+    width: 60px;
+    height: 60px;
+    background: url('yun.jpg') no-repeat center center;
+    background-size: contain;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    transform-origin: center center;
+}
+
+.custom-cursor.active {
+    transform: scale(1.5);
+}
+
+/* 可点击元素悬停效果 */
+a, button, .card, .feature-item, .contact-input {
+    cursor: none;
+}
+
+a:hover ~ .custom-cursor,
+button:hover ~ .custom-cursor,
+.card:hover ~ .custom-cursor,
+.feature-item:hover ~ .custom-cursor,
+.contact-input:hover ~ .custom-cursor {
+    transform: scale(1.5);
+}
+
+/* 情绪选择部分样式 */
+.emotions-content {
+    max-width: 800px;
+    width: 100%;
+}
+
+.emotions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.emotion-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.emotion-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.emotion-card:hover::before {
+    opacity: 1;
+}
+
+.emotion-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.emotion-card:hover .emotion-icon {
+    transform: scale(1.1);
+}
+
+.emotion-card p {
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+    margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* 情绪特定样式 */
+.emotion-card[data-emotion="happy"] {
+    border: 1px solid rgba(98, 255, 143, 0.2);
+}
+
+.emotion-card[data-emotion="happy"]:hover {
+    box-shadow: 0 0 20px rgba(98, 255, 143, 0.2);
+}
+
+.emotion-card[data-emotion="sad"] {
+    border: 1px solid rgba(98, 182, 255, 0.2);
+}
+
+.emotion-card[data-emotion="sad"]:hover {
+    box-shadow: 0 0 20px rgba(98, 182, 255, 0.2);
+}
+
+.emotion-card[data-emotion="angry"] {
+    border: 1px solid rgba(255, 98, 98, 0.2);
+}
+
+.emotion-card[data-emotion="angry"]:hover {
+    box-shadow: 0 0 20px rgba(255, 98, 98, 0.2);
+}
+
+.emotion-card[data-emotion="blank"] {
+    border: 1px solid rgba(255, 217, 98, 0.2);
+}
+
+.emotion-card[data-emotion="blank"]:hover {
+    box-shadow: 0 0 20px rgba(255, 217, 98, 0.2);
+}
+
+/* 进度条样式 */
+.fusion-progress {
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.progress-text {
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #4a90e2, #67b26f);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+.progress-percentage {
+    margin-top: 0.5rem;
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* 背景转换动画 */
+.section {
+    transition: background 1s ease;
+}
+
+/* 情绪背景样式 */
+.section.emotion-happy {
+    --color-primary: 164, 208, 58;
+    --color-secondary: 154, 198, 48;
+    --color-tertiary: 174, 218, 68;
+    --color-quaternary: 184, 228, 78;
+    background: linear-gradient(135deg, 
+        rgba(var(--color-primary), var(--background-opacity, 1)) 0%,
+        rgba(var(--color-secondary), var(--background-opacity, 1)) 25%,
+        rgba(var(--color-tertiary), var(--background-opacity, 1)) 50%,
+        rgba(var(--color-quaternary), var(--background-opacity, 1)) 75%,
+        rgba(var(--color-tertiary), var(--background-opacity, 1)) 100%);
+}
+
+.section.emotion-sad {
+    --color-primary: 75, 159, 225;
+    --color-secondary: 65, 149, 215;
+    --color-tertiary: 85, 169, 235;
+    --color-quaternary: 95, 179, 245;
+    background: linear-gradient(135deg, 
+        rgba(var(--color-primary), var(--background-opacity, 1)) 0%,
+        rgba(var(--color-secondary), var(--background-opacity, 1)) 25%,
+        rgba(var(--color-tertiary), var(--background-opacity, 1)) 50%,
+        rgba(var(--color-quaternary), var(--background-opacity, 1)) 75%,
+        rgba(var(--color-tertiary), var(--background-opacity, 1)) 100%);
+}
+
+.section.emotion-angry {
+    --color-primary: 255, 75, 75;
+    --color-secondary: 245, 65, 65;
+    --color-tertiary: 255, 85, 85;
+    --color-quaternary: 255, 95, 95;
+    background: linear-gradient(135deg, 
+        rgba(var(--color-primary), var(--background-opacity, 1)) 0%,
+        rgba(var(--color-secondary), var(--background-opacity, 1)) 25%,
+        rgba(var(--color-tertiary), var(--background-opacity, 1)) 50%,
+        rgba(var(--color-quaternary), var(--background-opacity, 1)) 75%,
+        rgba(var(--color-tertiary), var(--background-opacity, 1)) 100%);
+}
+
+.section.emotion-blank {
+    --color-primary: 255, 167, 38;
+    --color-secondary: 245, 157, 28;
+    --color-tertiary: 255, 177, 48;
+    --color-quaternary: 255, 187, 58;
+    background: linear-gradient(135deg, 
+        rgba(var(--color-primary), var(--background-opacity, 1)) 0%,
+        rgba(var(--color-secondary), var(--background-opacity, 1)) 25%,
+        rgba(var(--color-tertiary), var(--background-opacity, 1)) 50%,
+        rgba(var(--color-quaternary), var(--background-opacity, 1)) 75%,
+        rgba(var(--color-tertiary), var(--background-opacity, 1)) 100%);
+}
+
+/* 响应式设计补充 */
+@media (max-width: 768px) {
+    .emotions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .emotion-icon {
+        font-size: 2.5rem;
+    }
+
+    .emotion-card p {
+        font-size: 1rem;
+    }
+}
+
+/* 性格选择部分样式 */
+.personality-content {
+    max-width: 1000px;
+    width: 100%;
+}
+
+.personality-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.personality-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.personality-choice {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    width: 250px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.personality-choice:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.personality-choice.selected {
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.choice-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.personality-choice h3 {
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.personality-choice p {
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    color: rgba(255, 255, 255, 0.7);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.selected-traits {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* 理性风格 */
+.rational-style {
+    font-family: 'Noto Sans SC', sans-serif;
+    --background-opacity: 0.8;
+}
+
+/* 感性风格 */
+.emotional-style {
+    font-family: 'ZCOOL XiaoWei', serif;
+    --background-opacity: 1;
+}
+
+.emotional-style .contact-input,
+.emotional-style .start-btn,
+.emotional-style .next-btn,
+.emotional-style .emotion-card,
+.emotional-style .personality-choice,
+.emotional-style .action-btn,
+.emotional-style .restart-btn,
+.emotional-style .exit-btn,
+.emotional-style .tip {
+    border-radius: 50px !important;
+    transition: all 0.5s ease;
+}
+
+.emotional-style .content {
+    border-radius: 50px !important;
+}
+
+.emotional-style .canvas-container {
+    border-radius: 50px !important;
+}
+
+.emotional-style .artwork-display {
+    border-radius: 50px !important;
+}
+
+.emotional-style #capturedCanvas {
+    border-radius: 50px !important;
+}
+
+/* 调整按钮和输入框的内边距，使其更协调 */
+.emotional-style .contact-input {
+    padding: 1.2rem 2rem;
+}
+
+.emotional-style .start-btn,
+.emotional-style .next-btn,
+.emotional-style .action-btn,
+.emotional-style .restart-btn,
+.emotional-style .exit-btn {
+    padding: 1.2rem 3rem;
+}
+
+.emotional-style .emotion-card,
+.emotional-style .personality-choice {
+    border-radius: 40px !important;
+    padding: 2.5rem;
+}
+
+.emotional-style .tip {
+    padding: 0.8rem 2rem;
+}
+
+/* 添加更柔和的悬停效果 */
+.emotional-style .emotion-card:hover,
+.emotional-style .personality-choice:hover,
+.emotional-style .action-btn:hover,
+.emotional-style .start-btn:hover,
+.emotional-style .next-btn:not([disabled]):hover {
+    transform: translateY(-5px) scale(1.02);
+    transition: all 0.5s ease;
+}
+
+/* NEXT按钮样式 */
+.next-btn {
+    font-family: 'Quicksand', sans-serif;
+    padding: 1rem 3rem;
+    font-size: clamp(1rem, 1.4vw, 1.4rem);
+    background: linear-gradient(45deg, #4a90e2, #67b26f);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-top: 2rem;
+    opacity: 0.5;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.next-btn:not([disabled]) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.next-btn:not([disabled]):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4);
+}
+
+/* 响应式设计补充 */
+@media (max-width: 768px) {
+    .personality-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .personality-choice {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* 交互艺术部分样式 */
+.interactive-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.canvas-container {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#artCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+#videoInput {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+}
+
+#debugCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    pointer-events: none;
+}
+
+.interaction-tips {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.tip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tip i {
+    font-size: 1.2rem;
+}
+
+.final-progress {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+.final-progress .progress-bar {
+    height: 12px;
+}
+
+/* 响应式设计补充 */
+@media (max-width: 768px) {
+    .canvas-container {
+        height: 40vh;
+    }
+
+    .interaction-tips {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* 最终展示部分样式 */
+.final-content {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.artwork-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.artwork-display {
+    width: 100%;
+    height: 60vh;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+#finalArtCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+#finalVideoInput {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.artwork-summary {
+    text-align: center;
+    padding: 1rem;
+}
+
+.fusion-message {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    font-family: 'ZCOOL XiaoWei', serif;
+    max-width: 100%;
+    padding: 0 1rem;
+}
+
+.artwork-actions {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.action-btn i {
+    font-size: 1.2rem;
+}
+
+.final-buttons {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.restart-btn, .exit-btn {
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.restart-btn {
+    background: linear-gradient(45deg, #4a90e2, #67b26f);
+    color: white;
+    border: none;
+}
+
+.exit-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.restart-btn:hover, .exit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.thank-you-message {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Ma Shan Zheng', cursive;
+    max-width: 100%;
+    padding: 0 1rem;
+}
+
+/* 响应式设计补充 */
+@media (max-width: 768px) {
+    .artwork-display {
+        height: 40vh;
+    }
+
+    .artwork-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .final-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* 拍摄相关样式 */
+.capture-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.countdown {
+    font-size: 6rem;
+    color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    animation: pulse 1s infinite;
+}
+
+.artwork-controls {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.artwork-preview {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+#capturedCanvas {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.preview-controls {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.capture-btn {
+    background: linear-gradient(45deg, #4a90e2, #67b26f);
+    border: none;
+    color: white;
+}
+
+.retake-btn {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.action-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+/* 修改现有的artwork-display样式 */
+.artwork-display {
+    width: 100%;
+    height: 60vh;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* 视频背景样式 */
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.7;
+    filter: brightness(0.8) blur(2px);
+}
+
+/* 确保视频容器正确定位 */
+.section[data-anchor="section1"] .container {
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* 调整内容层级，确保在视频上方 */
+.section[data-anchor="section1"] .content {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+/* 为了确保视频背景效果，调整第一个section的背景 */
+.section[data-anchor="section1"] {
+    background: rgba(41, 31, 71, 0.3);
+}
+
+/* 当hover到开始按钮时，增加视频亮度 */
+.start-btn:hover ~ .background-video {
+    filter: brightness(1) blur(1px);
+    opacity: 0.8;
+}
+
+/* 首页全屏内容样式 */
+.full-container {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.full-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+/* 调整首页标题样式 */
+.full-content .title {
+    font-family: 'MuYaoSoftBrush', 'Mochiy Pop One', sans-serif;
+    font-size: clamp(2rem, 8vw, 8rem);
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0 2rem;
+    line-height: 1.2;
+    background: linear-gradient(45deg, #FFB6C1, #87CEEB, #98FB98);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.2),
+        0 0 40px rgba(255, 255, 255, 0.2);
+    animation: titleFloat 3s ease-in-out infinite;
+    letter-spacing: 0.1em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.full-content .subtitle {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: clamp(1.5rem, 4vw, 4rem);
+    margin: 1rem 0 2rem 0;
+    background: linear-gradient(45deg, #FFB6C1, #87CEEB);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.2em;
+    animation: subtitleFloat 3s ease-in-out infinite 0.5s;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    padding: 0 1rem;
+}
+
+/* 添加浮动动画 */
+@keyframes titleFloat {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-10px) scale(1.02);
+    }
+}
+
+@keyframes subtitleFloat {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(10px) scale(1.02);
+    }
+}
+
+/* START 按钮样式更新 */
+.full-content .start-btn {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    padding: 1rem 4rem;
+    margin-top: 2rem;
+    background: linear-gradient(45deg, #FFB6C1, #87CEEB);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.2),
+        0 0 20px rgba(255, 255, 255, 0.2);
+    animation: buttonPulse 2s infinite;
+}
+
+.full-content .start-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes buttonPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .full-content .title {
+        font-size: clamp(6rem, 12vw, 12rem);
+        padding: 0 1rem;
+    }
+
+    .full-content .subtitle {
+        font-size: clamp(3rem, 6vw, 6rem);
+    }
+
+    .full-content .start-btn {
+        font-size: clamp(1.2rem, 2vw, 2rem);
+        padding: 0.8rem 3rem;
+    }
+}
+
+/* 其他页面内容样式调整 */
+.section:not([data-anchor="section1"]) .content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    margin: 2rem;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .full-content .title {
+        font-size: 4rem;
+    }
+
+    .full-content .subtitle {
+        font-size: 1.8rem;
+    }
+
+    .full-content .start-btn {
+        font-size: 1.5rem;
+        padding: 1.2rem 4rem;
+    }
+}
+
+/* 确保视频在所有页面都显示 */
+#fullpage {
+    position: relative;
+    z-index: 1;
+}
+
+/* 调整导航点样式，确保在视频上方可见 */
+.section-nav {
+    z-index: 100;
+}
+
+/* 调整所有交互元素的层级 */
+.emotion-card,
+.personality-choice,
+.next-btn,
+.start-btn {
+    position: relative;
+    z-index: 2;
+}
+
+/* 情绪背景叠加效果 */
+.emotion-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    mix-blend-mode: soft-light;
+}
+
+.emotion-overlay.active {
+    opacity: 0.6;
+}
+
+/* 情绪特定颜色 */
+.emotion-overlay.happy {
+    background: linear-gradient(135deg,
+        rgba(164, 208, 58, 0.8) 0%,
+        rgba(154, 198, 48, 0.8) 25%,
+        rgba(174, 218, 68, 0.8) 50%,
+        rgba(184, 228, 78, 0.8) 75%,
+        rgba(174, 218, 68, 0.8) 100%);
+}
+
+.emotion-overlay.sad {
+    background: linear-gradient(135deg,
+        rgba(75, 159, 225, 0.8) 0%,
+        rgba(65, 149, 215, 0.8) 25%,
+        rgba(85, 169, 235, 0.8) 50%,
+        rgba(95, 179, 245, 0.8) 75%,
+        rgba(85, 169, 235, 0.8) 100%);
+}
+
+.emotion-overlay.angry {
+    background: linear-gradient(135deg,
+        rgba(255, 75, 75, 0.8) 0%,
+        rgba(245, 65, 65, 0.8) 25%,
+        rgba(255, 85, 85, 0.8) 50%,
+        rgba(255, 95, 95, 0.8) 75%,
+        rgba(255, 85, 85, 0.8) 100%);
+}
+
+.emotion-overlay.blank {
+    background: linear-gradient(135deg,
+        rgba(255, 167, 38, 0.8) 0%,
+        rgba(245, 157, 28, 0.8) 25%,
+        rgba(255, 177, 48, 0.8) 50%,
+        rgba(255, 187, 58, 0.8) 75%,
+        rgba(255, 177, 48, 0.8) 100%);
+}
+
+/* 调整内容层级，确保在叠加层上方 */
+.section .content {
+    position: relative;
+    z-index: 2;
+}
+
+/* 添加可爱字体 */
+@font-face {
+    font-family: 'MuYaoSoftBrush';
+    src: url('https://cdn.jsdelivr.net/gh/justfont/open-huninn-font@v1.1/font/jf-openhuninn-1.1.ttf') format('truetype');
+}
+
+.selection-guide {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    color: rgba(255, 255, 255, 0.9);
+    margin: 1rem 0 2rem;
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    display: inline-block;
+}
+
+.emotion-emoji {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transform-origin: center center;
+}
+
+.emotion-emoji img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 为不同情绪设置不同的发光效果 */
+.emotion-emoji.happy {
+    animation: floatHappyEmoji 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 15px rgba(255, 223, 0, 0.8)) brightness(1.2);
+}
+
+.emotion-emoji.happy img {
+    filter: drop-shadow(0 0 10px rgba(255, 223, 0, 0.6));
+}
+
+.emotion-emoji.sad {
+    animation: floatEmoji 5s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(0, 150, 255, 0.9)) 
+            drop-shadow(0 0 40px rgba(0, 150, 255, 0.8))
+            drop-shadow(0 0 60px rgba(0, 150, 255, 0.7))
+            brightness(1.4);
+}
+
+.emotion-emoji.sad img {
+    filter: drop-shadow(0 0 15px rgba(0, 150, 255, 0.8))
+            drop-shadow(0 0 30px rgba(0, 150, 255, 0.7));
+}
+
+.emotion-emoji.angry {
+    animation: floatAngryEmoji 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8)) brightness(1.2);
+}
+
+.emotion-emoji.angry img {
+    filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.6));
+}
+
+.emotion-emoji.blank {
+    animation: floatBlankEmoji 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8)) brightness(1.2);
+}
+
+.emotion-emoji.blank img {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+}
+
+/* 添加发光动画 */
+@keyframes glowPulse {
+    0%, 100% {
+        filter: drop-shadow(0 0 15px rgba(var(--glow-color), 0.8)) brightness(1.2);
+    }
+    50% {
+        filter: drop-shadow(0 0 25px rgba(var(--glow-color), 0.9)) brightness(1.4);
+    }
+}
+
+/* 修改现有的动画，添加发光效果 */
+@keyframes floatEmoji {
+    0% {
+        transform: translate(var(--startX), var(--startY)) rotate(0deg) scale(0.8);
+        opacity: 0;
+        filter: drop-shadow(0 0 20px rgba(0, 150, 255, 0.8))
+                drop-shadow(0 0 40px rgba(0, 150, 255, 0.7))
+                brightness(1.2);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(var(--midX), var(--midY)) rotate(180deg) scale(1);
+        filter: drop-shadow(0 0 30px rgba(0, 150, 255, 0.9))
+                drop-shadow(0 0 60px rgba(0, 150, 255, 0.8))
+                drop-shadow(0 0 90px rgba(0, 150, 255, 0.7))
+                brightness(1.5);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(var(--endX), var(--endY)) rotate(360deg) scale(1);
+        filter: drop-shadow(0 0 30px rgba(0, 150, 255, 0.9))
+                drop-shadow(0 0 60px rgba(0, 150, 255, 0.8))
+                drop-shadow(0 0 90px rgba(0, 150, 255, 0.7))
+                brightness(1.5);
+    }
+    100% {
+        transform: translate(var(--endX), var(--endY)) rotate(420deg) scale(0.8);
+        opacity: 0;
+        filter: drop-shadow(0 0 20px rgba(0, 150, 255, 0.8))
+                drop-shadow(0 0 40px rgba(0, 150, 255, 0.7))
+                brightness(1.2);
+    }
+}
+
+@keyframes floatHappyEmoji {
+    0% {
+        transform: translate(var(--startX), var(--startY)) rotate(0deg) scale(0.8);
+        opacity: 0;
+        filter: drop-shadow(0 0 15px rgba(255, 223, 0, 0.6)) brightness(1.1);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(var(--midX), var(--midY)) rotate(180deg) scale(1.2);
+        filter: drop-shadow(0 0 25px rgba(255, 223, 0, 0.9)) brightness(1.4);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(var(--endX), var(--endY)) rotate(360deg) scale(1.2);
+        filter: drop-shadow(0 0 25px rgba(255, 223, 0, 0.9)) brightness(1.4);
+    }
+    100% {
+        transform: translate(var(--endX), var(--endY)) rotate(420deg) scale(0.8);
+        opacity: 0;
+        filter: drop-shadow(0 0 15px rgba(255, 223, 0, 0.6)) brightness(1.1);
+    }
+}
+
+@keyframes floatAngryEmoji {
+    0% {
+        transform: translate(var(--startX), var(--startY)) rotate(-30deg) scale(1);
+        opacity: 0;
+        filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.6)) brightness(1.1);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(var(--midX), var(--midY)) rotate(30deg) scale(1.3);
+        filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.9)) brightness(1.4);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(var(--endX), var(--endY)) rotate(-30deg) scale(1.3);
+        filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.9)) brightness(1.4);
+    }
+    100% {
+        transform: translate(var(--endX), var(--endY)) rotate(30deg) scale(1);
+        opacity: 0;
+        filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.6)) brightness(1.1);
+    }
+}
+
+@keyframes floatBlankEmoji {
+    0% {
+        transform: translate(var(--startX), var(--startY)) scale(0.9);
+        opacity: 0;
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)) brightness(1.1);
+    }
+    20% {
+        opacity: 0.8;
+        transform: translate(var(--midX), var(--midY)) scale(1);
+        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)) brightness(1.3);
+    }
+    80% {
+        opacity: 0.8;
+        transform: translate(var(--endX), var(--endY)) scale(1);
+        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)) brightness(1.3);
+    }
+    100% {
+        transform: translate(var(--endX), var(--endY)) scale(0.9);
+        opacity: 0;
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)) brightness(1.1);
+    }
+}
+
+/* 添加到现有的emotion-card样式中 */
+.emotion-card[data-emotion="sad"].clicked::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(98, 182, 255, 0.2);
+    border-radius: inherit;
+    animation: pulseEffect 0.5s ease-out;
+}
+
+@keyframes pulseEffect {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* 箭头基本样式 */
+.emotion-arrow {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    right: -340px;
+    bottom: -150px;
+    transform-origin: center;
+    animation: arrowFloat 3s ease-in-out infinite;
+    opacity: 1;
+    transition: all 0.3s ease;
+    z-index: 9999;
+    pointer-events: none;
+    display: block;
+    visibility: visible;
+}
+
+.emotion-arrow img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    visibility: visible;
+}
+
+/* 移除所有发光效果相关的样式 */
+.emotion-arrow.happy,
+.emotion-arrow.sad,
+.emotion-arrow.angry,
+.emotion-arrow.blank {
+    filter: none;
+}
+
+/* 新的浮动动画 */
+@keyframes arrowFloat {
+    0% {
+        transform: translateY(0px) rotate(-5deg);
+    }
+    25% {
+        transform: translateY(-15px) rotate(5deg);
+    }
+    50% {
+        transform: translateY(0px) rotate(-5deg);
+    }
+    75% {
+        transform: translateY(15px) rotate(5deg);
+    }
+    100% {
+        transform: translateY(0px) rotate(-5deg);
+    }
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+    .emotion-arrow {
+        width: 240px;
+        height: 240px;
+        right: -260px;
+        bottom: -120px;
+    }
+}
+
+@media (max-width: 768px) {
+    .emotion-arrow {
+        width: 160px;
+        height: 160px;
+        right: -180px;
+        bottom: -90px;
+    }
+}
+
+/* 修改NEXT按钮容器样式 */
+.next-btn-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+/* 为选中的性格类型添加特效 */
+.personality-choice.emotional.selected {
+    background: rgba(255, 182, 193, 0.2);
+    box-shadow: 0 0 20px rgba(255, 182, 193, 0.3);
+}
+
+.personality-choice.rational.selected {
+    background: rgba(135, 206, 235, 0.2);
+    box-shadow: 0 0 20px rgba(135, 206, 235, 0.3);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .personality-symbol {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .personality-symbol.small {
+        width: 15px;
+        height: 15px;
+    }
+    
+    .personality-symbol.medium {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .personality-symbol.large {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* 音乐符号样式 */
+.music-note {
+    position: fixed;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 9999;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    will-change: transform;
+}
+
+/* 内向音符样式 */
+.music-note.introvert {
+    color: rgba(135, 206, 235, 0.9);
+    text-shadow: 0 0 10px rgba(135, 206, 235, 0.6);
+}
+
+/* 外向音符样式 */
+.music-note.extrovert {
+    color: rgba(255, 182, 193, 0.9);
+    text-shadow: 0 0 10px rgba(255, 182, 193, 0.6);
+}
+
+/* 音符浮动动画 */
+@keyframes floatMusicNote {
+    0% {
+        transform: translate(var(--startX), var(--startY)) rotate(0deg) scale(0.8);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+        transform: translate(var(--midX), var(--midY)) rotate(180deg) scale(1.2);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(var(--endX), var(--endY)) rotate(360deg) scale(1.2);
+    }
+    100% {
+        transform: translate(var(--endX), var(--endY)) rotate(420deg) scale(0.8);
+        opacity: 0;
+    }
+}
+
+.music-note {
+    animation: floatMusicNote 4s ease-in-out forwards;
+}
+
+/* 手势绘制界面样式 */
+.hand-drawing-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 20;
+}
+
+.drawing-instructions {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+
+.drawing-instructions h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.drawing-instructions p {
+    font-size: 1.2em;
+    opacity: 0.8;
+}
+
+.drawing-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.control-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1.1em;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.control-btn i {
+    font-size: 1.2em;
+}
+
+/* 确保canvas全屏显示 */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* 手势识别页面样式 */
+.gesture-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.gesture-container {
+    position: relative;
+    width: 640px;
+    height: 480px;
+    margin: 2rem auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.input-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+.output-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.gesture-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.control-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .gesture-container {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4/3;
+    }
+    
+    .gesture-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .control-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+} 

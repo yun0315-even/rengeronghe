@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格融合</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.20/fullpage.min.css">
+    <!-- 添加Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- 添加Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+XiaoWei&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 音频元素 -->
+    <audio id="bgMusic" preload="auto">
+        <source src="baizaoyin.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放
+    </audio>
+
+    <!-- 自定义光标 -->
+    <div class="custom-cursor"></div>
+
+    <!-- 视频背景 -->
+    <video class="background-video" autoplay muted loop playsinline preload="auto">
+        <source src="fengmian.mov" type="video/quicktime">
+        <source src="fengmian.mov" type="video/mp4">
+    </video>
+
+    <!-- 情绪颜色叠加层 -->
+    <div class="emotion-overlay"></div>
+
+    <div id="fullpage">
+        <!-- 首页部分 -->
+        <section class="section" data-anchor="section1">
+            <div class="container full-container">
+                <div class="content full-content">
+                    <h1 class="title">云心共绘</h1>
+                    <p class="subtitle">HEARTCLOUD</p>
+                    <button class="start-btn" id="startBtn">START</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 情绪选择部分 -->
+        <section class="section" data-anchor="section2">
+            <div class="container">
+                <div class="content emotions-content">
+                    <h2>选择你当前的情绪</h2>
+                    <div class="emotions-grid">
+                        <div class="emotion-card" data-emotion="happy">
+                            <div class="emotion-icon">
+                                <i class="fas fa-smile-beam"></i>
+                            </div>
+                            <p>开心</p>
+                        </div>
+                        <div class="emotion-card" data-emotion="sad">
+                            <div class="emotion-icon">
+                                <i class="fas fa-sad-tear"></i>
+                            </div>
+                            <p>难过</p>
+                        </div>
+                        <div class="emotion-card" data-emotion="angry">
+                            <div class="emotion-icon">
+                                <i class="fas fa-angry"></i>
+                            </div>
+                            <p>生气</p>
+                        </div>
+                        <div class="emotion-card" data-emotion="blank">
+                            <div class="emotion-icon">
+                                <i class="fas fa-meh-blank"></i>
+                            </div>
+                            <p>发呆</p>
+                        </div>
+                    </div>
+                    <div class="fusion-progress">
+                        <div class="progress-text">融合进度</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="progress-percentage">0%</div>
+                    </div>
+                    <div class="next-btn-container">
+                        <button class="next-btn" id="emotionNextBtn" disabled>NEXT</button>
+                        <div class="emotion-arrow">
+                            <img src="" alt="direction arrow">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 性格选择部分 -->
+        <section class="section" data-anchor="section3">
+            <div class="container">
+                <div class="content personality-content">
+                    <h2>选择你的性格特征</h2>
+                    <p class="selection-guide">请在理性/感性中选择一个，在内向/外向中选择一个</p>
+                    <div class="personality-grid">
+                        <div class="personality-row">
+                            <div class="personality-choice" data-type="rational" data-category="style">
+                                <div class="choice-icon">🧠</div>
+                                <h3>理性</h3>
+                                <p>逻辑思维，理性决策</p>
+                            </div>
+                            <div class="personality-choice" data-type="emotional" data-category="style">
+                                <div class="choice-icon">❤️</div>
+                                <h3>感性</h3>
+                                <p>感性思维，随心而动</p>
+                            </div>
+                        </div>
+                        <div class="personality-row">
+                            <div class="personality-choice" data-type="introvert" data-category="social">
+                                <div class="choice-icon">🤔</div>
+                                <h3>内向</h3>
+                                <p>安静，独处时感到舒适</p>
+                            </div>
+                            <div class="personality-choice" data-type="extrovert" data-category="social">
+                                <div class="choice-icon">🎉</div>
+                                <h3>外向</h3>
+                                <p>活泼，享受社交互动</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-traits">
+                        <p>已选择：<span id="selectedTraits">未选择</span></p>
+                    </div>
+                    <div class="fusion-progress personality-progress">
+                        <div class="progress-text">融合进度</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="progress-percentage">25%</div>
+                    </div>
+                    <button class="next-btn" id="personalityNextBtn" disabled>NEXT</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 手势识别部分 -->
+        <section class="section" data-anchor="section4">
+            <div class="container">
+                <div class="content gesture-content">
+                    <h2>用手势绘制你的心情</h2>
+                    <div class="gesture-container">
+                        <video id="input-video" class="input-video" playsinline></video>
+                        <canvas id="output-canvas" class="output-canvas"></canvas>
+                    </div>
+                    <div class="gesture-controls">
+                        <button id="clearCanvas" class="control-btn">清除画布</button>
+                        <button id="toggleCamera" class="control-btn">切换摄像头</button>
+                        <button id="saveImage" class="control-btn">保存图片</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.20/fullpage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- MediaPipe相关脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    <!-- 自定义脚本 -->
+    <script src="js/sound-effects.js"></script>
+    <script src="particles.js"></script>
+    <script src="handDrawing.js"></script>
+    <script src="script.js"></script>
+    <script src="js/music-animation.js"></script>
+    <script src="js/personality-animation.js"></script>
+    <script>
+    function handleMusicPlayback() {
+        const social = selectedPersonalityTraits.social;
+        if (social) {
+            // 淡出当前音乐
+            const fadeOut = setInterval(() => {
+                if (bgMusic.volume > 0.02) {
+                    bgMusic.volume -= 0.02;
+                } else {
+                    clearInterval(fadeOut);
+                    // 设置新的音频源
+                    bgMusic.src = social === 'extrovert' ? 'happy.mp3' : 'sad.mp3';
+                    bgMusic.volume = 0;
+                    // 播放新音乐并淡入
+                    bgMusic.play().then(() => {
+                        const fadeIn = setInterval(() => {
+                            if (bgMusic.volume < 0.28) {
+                                bgMusic.volume += 0.02;
+                            } else {
+                                bgMusic.volume = 0.3;
+                                clearInterval(fadeIn);
+                            }
+                        }, 100);
+                    });
+                }
+            }, 100);
+        }
+    }
+
+    personalityChoices.forEach(choice => {
+        choice.addEventListener('click', () => {
+            // ... 其他代码 ...
+            
+            // 处理音乐播放
+            handleMusicPlayback();
+            
+            // ... 其他代码 ...
+        });
+    });
+
+    const emotionProgressFill = document.querySelector('.emotions-content .progress-fill');
+    const emotionProgressText = document.querySelector('.emotions-content .progress-percentage');
+
+    if (event.detail.destination.index === 4) { // 当进入第五页时
+        if (!window.handDrawingManager) {
+            window.handDrawingManager = new HandDrawingManager();
+            if (currentEmotion) {
+                window.handDrawingManager.setColor(currentEmotion);
+            }
+        }
+    }
+    </script>
+</body>
+</html> 
