@@ -1849,4 +1849,81 @@ canvas {
         width: 100%;
         max-width: 200px;
     }
+}
+
+.fusion-messages {
+    margin-top: 2.5rem;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    color: #fff;
+    font-family: 'ZCOOL XiaoWei', serif;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    letter-spacing: 2px;
+    line-height: 1.6;
+    min-height: 5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 1.5s;
+}
+
+.fusion-messages .waiting {
+    display: inline-block;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ffd700 30%, #fff 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fusionWaiting 1.2s infinite linear;
+}
+
+@keyframes fusionWaiting {
+    0% { opacity: 1; letter-spacing: 2px; }
+    50% { opacity: 0.5; letter-spacing: 8px; }
+    100% { opacity: 1; letter-spacing: 2px; }
+}
+
+@media (max-width: 768px) {
+    .fusion-messages {
+        font-size: clamp(1.1rem, 4vw, 2rem);
+        padding: 0 0.5rem;
+    }
+}
+
+.fusion-view-btn-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+}
+
+.fusion-view-btn {
+    font-family: 'Mochiy Pop One', 'Quicksand', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    padding: 1.2rem 5rem;
+    background: linear-gradient(45deg, #ffd700, #fffbe0);
+    color: #333;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.18), 0 0 0 1px #fffbe0;
+    text-shadow: 0 2px 8px rgba(255,255,255,0.18);
+    letter-spacing: 4px;
+    transition: all 0.3s;
+    animation: buttonPulse 2s infinite;
+    outline: none;
+    margin: 0 auto;
+    display: block;
+}
+
+.fusion-view-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(255, 215, 0, 0.28), 0 0 0 2px #fffbe0;
+}
+
+@media (max-width: 768px) {
+    .fusion-view-btn {
+        font-size: clamp(1.2rem, 6vw, 2.2rem);
+        padding: 0.8rem 2.5rem;
+    }
 } 

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JimengApi 测试</title>
+    <link rel="stylesheet" href="https://unpkg.com/dplayer/dist/DPlayer.min.css">
+    <script src="https://unpkg.com/dplayer/dist/DPlayer.min.js"></script>
 </head>
 <body>
 <h2>JimengApi 测试</h2>
@@ -21,6 +23,7 @@
     <button type="submit">查询任务</button>
 </form>
 <pre id="query_result"></pre>
+<div id="my_video_div"></div>
 <script src="js/jimengApi.js"></script>
 <script>
 // 提交任务
@@ -53,11 +56,22 @@ document.getElementById('apiForm').onsubmit = async function(e) {
 
 // 查询任务
 let queryInterval = null;
+let progressDotInterval = null;
 document.getElementById('queryForm').onsubmit = async function(e) {
     e.preventDefault();
-    const req_key = document.querySelector('input[name="req_key"]').value;
+    const req_key = document.querySelector('input[name=\"req_key\"]').value;
     const task_id = document.getElementById('task_id_input').value.trim();
-    document.getElementById('query_result').textContent = '查询中...';
+    document.getElementById('query_result').textContent = '视频渲染中';
+    // 动画点
+    let dotCount = 0;
+    if (progressDotInterval) clearInterval(progressDotInterval);
+    progressDotInterval = setInterval(() => {
+        dotCount = (dotCount + 1) % 4;
+        document.getElementById('query_result').textContent = '视频渲染中' + '.'.repeat(dotCount);
+    }, 500);
+    // 移除旧视频播放器
+    const videoDiv = document.getElementById('my_video_div');
+    videoDiv.innerHTML = '';
     if (queryInterval) clearInterval(queryInterval);
     // 封装查询逻辑
     async function queryOnce() {
@@ -70,11 +84,32 @@ document.getElementById('queryForm').onsubmit = async function(e) {
             } catch (e) {}
             if (data && data.data && data.data.status === 'done' && data.data.video_url) {
                 clearInterval(queryInterval);
+                clearInterval(progressDotInterval);
                 document.getElementById('query_result').textContent = JSON.stringify(res, null, 2) + '\n视频地址：' + data.data.video_url;
+                // 用 DPlayer 渲染
+                videoDiv.innerHTML = '';
+                const dp = new DPlayer({
+                    container: videoDiv,
+                    video: {
+                        url: data.data.video_url,
+                        type: 'auto',
+                        pic: ''
+                    },
+                    autoplay: true
+                });
+                // 增加新窗口打开按钮
+                const openBtn = document.createElement('button');
+                openBtn.textContent = '新窗口打开视频';
+                openBtn.style.marginTop = '12px';
+                openBtn.onclick = function() {
+                    window.open(data.data.video_url, '_blank');
+                };
+                videoDiv.appendChild(openBtn);
             }
         } catch (err) {
             document.getElementById('query_result').textContent = '查询失败: ' + err;
             clearInterval(queryInterval);
+            clearInterval(progressDotInterval);
         }
     }
     // 立即查一次

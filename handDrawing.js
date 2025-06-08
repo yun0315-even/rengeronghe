@@ -161,7 +161,7 @@ class HandDrawingManager {
             this.saveImage();
             
             // 显示提示信息
-            this.showMessage('绘制已暂停，图片已保存！');
+            console.log('绘制已暂停，图片已保存！');
         }
     }
 
@@ -297,7 +297,7 @@ class HandDrawingManager {
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
             tempCanvas.toBlob(async (blob) => {
                 if (!blob) {
-                    this.showMessage('图片生成失败');
+                    console.log('图片生成失败');
                     return;
                 }
                 const file = new File([blob], `drawing_${timestamp}.png`, { type: 'image/png' });
@@ -309,28 +309,50 @@ class HandDrawingManager {
                     const url = res.data?.url || res.url || '';
                     this.uploadedImageUrl = url;
                     if (url) {
-                        this.showMessage('图片已上传，地址：' + url);
+                        console.log('图片已上传，地址：' + url);
+                        if (window.onHandDrawingSaved) {
+                            window.onHandDrawingSaved({ url });
+                        }
                         // 调用千问3图片解析，生成即梦关键词
                         try {
                             const { default: qianwen3ImageParse } = await import('./js/qianwen3.js');
                             const keywords = await qianwen3ImageParse(url, '请用5个词描述这幅画的梦境关键词');
                             this.dreamKeywords = keywords;
-                            this.showMessage('即梦关键词：' + keywords);
+                            console.log('即梦关键词：' + keywords);
+                            // 调用即梦API，生成视频
+                            try {
+                                console.log('[即梦API] 提交任务参数:', { image_urls: [url], prompt: keywords });
+                                const { taskId, req_key } = await this.submitJimengTask({
+                                    image_urls: [url],
+                                    prompt: keywords
+                                });
+                                console.log('[即梦API] 任务已提交，task_id:', taskId, 'req_key:', req_key);
+                                const videoUrl = await this.queryJimengTaskUntilDone({ req_key, task_id: taskId });
+                                console.log('[即梦API] 视频生成成功，地址:', videoUrl);
+                                // ===== 操作已有元素 =====
+                                const msg3 = document.getElementById('msg3');
+                                if (msg3) msg3.textContent = '完成融合';
+                                const fusionViewBtn = document.getElementById('fusionViewBtn');
+                                if (fusionViewBtn) {
+                                    fusionViewBtn.style.display = '';
+                                    fusionViewBtn.onclick = () => window.open(videoUrl, '_blank');
+                                }
+                            } catch (e) {
+                                console.error('[即梦API] 失败', e);
+                            }
                         } catch (e) {
-                            this.showMessage('即梦关键词生成失败');
                             console.error('千问3解析失败', e);
                         }
                     } else {
-                        this.showMessage('图片上传成功，但未返回地址');
+                        console.log('图片上传成功，但未返回地址');
                     }
                 } catch (e) {
-                    this.showMessage('图片上传失败');
                     console.error('上传失败', e);
                 }
             }, 'image/png');
         } catch (error) {
+            console.log('保存图片失败，请重试');
             console.error('Error saving image:', error);
-            this.showMessage('保存图片失败，请重试');
         }
     }
 
@@ -414,6 +436,47 @@ class HandDrawingManager {
         link.click();
 
         // 显示提示信息
-        this.showMessage('路径已定格并保存！');
+        console.log('路径已定格并保存！');
+    }
+
+    // ======= 新增方法：提交任务 =======
+    async submitJimengTask({ image_urls, prompt, req_key = 'jimeng_vgfm_i2v_l20' }) {
+        const JimengApi = (await import('./js/jimengApi.js')).default || window.JimengApi;
+        console.log('[submitJimengTask] doImage2Video参数:', { req_key, image_urls, prompt });
+        const res = await JimengApi.doImage2Video({ req_key, image_urls, prompt });
+        console.log('[submitJimengTask] doImage2Video返回:', res);
+        let data;
+        try {
+            data = JSON.parse(res.body);
+            console.log('[submitJimengTask] 解析body:', data);
+        } catch (e) {
+            console.error('[submitJimengTask] 解析body失败', e, res.body);
+        }
+        const taskId = data?.TaskId || data?.data?.task_id;
+        if (!taskId) throw new Error('未获取到task_id');
+        return { taskId, req_key };
+    }
+
+    // ======= 新增方法：轮询查询任务 =======
+    async queryJimengTaskUntilDone({ req_key, task_id, interval = 10000, maxTry = 60 }) {
+        const JimengApi = (await import('./js/jimengApi.js')).default || window.JimengApi;
+        for (let i = 0; i < maxTry; i++) {
+            console.log(`[queryJimengTaskUntilDone] 第${i+1}次查询, req_key:`, req_key, 'task_id:', task_id);
+            const res = await JimengApi.queryTaskProgress({ req_key, task_id });
+            console.log('[queryJimengTaskUntilDone] queryTaskProgress返回:', res);
+            let data;
+            try {
+                data = JSON.parse(res.body);
+                console.log('[queryJimengTaskUntilDone] 解析body:', data);
+            } catch (e) {
+                console.error('[queryJimengTaskUntilDone] 解析body失败', e, res.body);
+            }
+            if (data?.data?.status === 'done' && data?.data?.video_url) {
+                console.log('[queryJimengTaskUntilDone] 视频已生成:', data.data.video_url);
+                return data.data.video_url;
+            }
+            await new Promise(r => setTimeout(r, interval));
+        }
+        throw new Error('视频生成超时');
     }
 } 

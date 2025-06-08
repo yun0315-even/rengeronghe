@@ -727,4 +727,43 @@ document.addEventListener('DOMContentLoaded', () => {
             fullpage_api.moveTo(4); // 移动到第四页
         });
     }
+
+    // section5进度与提示逻辑
+    let fusionTaskId = null;
+    let fusionReqKey = null;
+    let fusionPollingTimer = null;
+
+    function showFusionSection({ imageUrl }) {
+        // 只展示图片
+        if (window.fullpage_api) window.fullpage_api.moveTo(5);
+        const img = document.getElementById('fusionImage');
+        if (img && imageUrl) {
+            img.src = imageUrl;
+            img.style.display = 'block';
+        }
+    }
+
+    async function queryFusionProgress() {
+        if (!fusionTaskId || !fusionReqKey) return;
+        try {
+            // 展示第二句
+            document.getElementById('msg2').textContent = '已发送融合请求';
+            const res = await fetch(`/api/queryFusionProgress?task_id=${fusionTaskId}&req_key=${fusionReqKey}`);
+            const data = await res.json();
+            if (data.status === 'done') {
+                document.getElementById('msg3').textContent = '融合完成';
+                clearInterval(fusionPollingTimer);
+            } else {
+                document.getElementById('msg3').textContent = '进行融合中...';
+            }
+        } catch (e) {
+            document.getElementById('msg3').textContent = '进度查询失败';
+        }
+    }
+
+    // section4保存图片后调用showFusionSection
+    // 假设handDrawing.js保存图片后会调用如下：
+    window.onHandDrawingSaved = function({ imageUrl, keywords, taskId, reqKey }) {
+        showFusionSection({ imageUrl });
+    };
 }); 
