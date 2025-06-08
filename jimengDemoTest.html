@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JimengApi 测试</title>
+</head>
+<body>
+<h2>JimengApi 测试</h2>
+<form id="apiForm">
+    <label>AccessKeyID: <input name="ak" required value="AKLTMmU2NGQ5MjAzNmFlNDU3ODk4MjljMjI4YWI4MjExZTk"></label><br>
+    <label>SecretAccessKey: <input name="sk" required value="TnpBek9USTJaV1l4TkRnM05Ea3lOemsxTVRWa1pUVXlNRGN3WTJZek5XTQ=="></label><br>
+    <label>req_key: <input name="req_key" required value="jimeng_vgfm_i2v_l20"></label><br>
+    <label>image_urls(逗号分隔): <input name="image_urls" required value="https://wxminipro.weichengzhaosheng.com/wcjy-oss-upload/2025/06/08/46a6083719a34300ab74e154149efa8b.jpg"></label><br>
+    <label>prompt: <input name="prompt" required value="一个美丽的女孩"></label><br>
+    <button type="submit">提交任务</button>
+</form>
+<pre id="result"></pre>
+<hr>
+<h2>任务查询</h2>
+<form id="queryForm">
+    <label>task_id: <input name="task_id" id="task_id_input" required></label><br>
+    <button type="submit">查询任务</button>
+</form>
+<pre id="query_result"></pre>
+<script src="js/jimengApi.js"></script>
+<script>
+const endpoint = 'visual.volcengineapi.com';
+const path = '/';
+const service = 'cv';
+const region = 'cn-north-1';
+const schema = 'https';
+const submitAction = 'CVSync2AsyncSubmitTask';
+const queryAction = 'CVSync2AsyncGetResult';
+const version = '2022-08-31';
+
+// 提交任务
+let lastTaskId = '';
+document.getElementById('apiForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const fd = new FormData(this);
+    const ak = fd.get('ak');
+    const sk = fd.get('sk');
+    const req_key = fd.get('req_key');
+    const image_urls = fd.get('image_urls').split(',').map(s => s.trim());
+    const prompt = fd.get('prompt');
+    document.getElementById('result').textContent = '请求中...';
+    try {
+        const res = await window.JimengApi.doRequest({
+            method: 'POST',
+            queryList: {},
+            body: { req_key, image_urls, prompt },
+            date: new Date(),
+            action: submitAction,
+            version,
+            region,
+            service,
+            schema,
+            host: endpoint,
+            path,
+            ak,
+            sk
+        });
+        document.getElementById('result').textContent = JSON.stringify(res, null, 2);
+        // 自动填充task_id
+        try {
+            const data = JSON.parse(res.body);
+            console.log(data);
+            if(data && data.TaskId) {
+                lastTaskId = data.TaskId;
+                document.getElementById('task_id_input').value = lastTaskId;
+            } else if(data && data.data && data.data.task_id) {
+                lastTaskId = data.data.task_id;
+                document.getElementById('task_id_input').value = lastTaskId;
+            }
+        } catch(e) {}
+    } catch (err) {
+        document.getElementById('result').textContent = '请求失败: ' + err;
+    }
+};
+
+// 查询任务
+// 自动带上ak、sk、req_key
+// task_id从输入框获取
+
+document.getElementById('queryForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const apiFd = new FormData(document.getElementById('apiForm'));
+    const ak = apiFd.get('ak');
+    const sk = apiFd.get('sk');
+    const req_key = apiFd.get('req_key');
+    const task_id = document.getElementById('task_id_input').value.trim();
+    document.getElementById('query_result').textContent = '查询中...';
+    try {
+        const res = await window.JimengApi.doRequest({
+            method: 'POST',
+            queryList: {},
+            body: { req_key, task_id },
+            date: new Date(),
+            action: queryAction,
+            version,
+            region,
+            service,
+            schema,
+            host: endpoint,
+            path,
+            ak,
+            sk
+        });
+        document.getElementById('query_result').textContent = JSON.stringify(res, null, 2);
+    } catch (err) {
+        document.getElementById('query_result').textContent = '查询失败: ' + err;
+    }
+};
+</script>
+</body>
+</html> 

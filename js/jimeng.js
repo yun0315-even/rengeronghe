@@ -11,7 +11,7 @@
  * @param {string} options.sk - Secret Key
  * @returns {Promise<Object>} 返回Promise，resolve为API响应
  */
-function submitImageToVideoTask({ image_urls, binary_data_base64, prompt, seed, aspect_ratio, ak, sk }) {
+async function submitImageToVideoTask({ image_urls, binary_data_base64, prompt, seed, aspect_ratio, ak, sk }) {
     if (!aspect_ratio) aspect_ratio = "4:3";
     if ((!image_urls || image_urls.length === 0) && (!binary_data_base64 || binary_data_base64.length === 0)) {
       throw new Error('image_urls和binary_data_base64必须二选一');
@@ -37,7 +37,7 @@ function submitImageToVideoTask({ image_urls, binary_data_base64, prompt, seed, 
       'x-date': xDate
     };
     const signedHeaders = ['content-type', 'host', 'x-date'];
-    const canonicalRequest = buildCanonicalRequest({
+    const canonicalRequest = await buildCanonicalRequest({
       method,
       uri,
       query,
@@ -47,7 +47,7 @@ function submitImageToVideoTask({ image_urls, binary_data_base64, prompt, seed, 
     });
     let authorization = '';
     if (ak && sk) {
-      authorization = genVolcAuthorization({
+      authorization = await genVolcAuthorization({
         ak,
         sk,
         region: 'cn-north-1',
@@ -75,7 +75,7 @@ function submitImageToVideoTask({ image_urls, binary_data_base64, prompt, seed, 
  * @param {string} options.sk - Secret Key
  * @returns {Promise<Object>} 返回Promise，resolve为API响应
  */
-function queryImageToVideoTask({ task_id, ak, sk }) {
+async function queryImageToVideoTask({ task_id, ak, sk }) {
     if (!task_id) throw new Error('task_id为必填项');
     const method = 'POST';
     const host = 'visual.volcengineapi.com';
@@ -94,7 +94,7 @@ function queryImageToVideoTask({ task_id, ak, sk }) {
       'x-date': xDate
     };
     const signedHeaders = ['content-type', 'host', 'x-date'];
-    const canonicalRequest = buildCanonicalRequest({
+    const canonicalRequest = await buildCanonicalRequest({
       method,
       uri,
       query,
@@ -104,7 +104,7 @@ function queryImageToVideoTask({ task_id, ak, sk }) {
     });
     let authorization = '';
     if (ak && sk) {
-      authorization = genVolcAuthorization({
+      authorization = await genVolcAuthorization({
         ak,
         sk,
         region: 'cn-north-1',
@@ -135,90 +135,76 @@ function queryImageToVideoTask({ task_id, ak, sk }) {
  * @param {number} [options.maxRetry] 最大轮询次数，默认30
  * @returns {Promise<string>} 成功时resolve视频url，否则reject错误
  */
-function submitAndWaitForVideoUrl({ image_urls, binary_data_base64, prompt, seed, aspect_ratio, interval = 2000, maxRetry = 30 }) {
-  return submitImageToVideoTask({ image_urls, binary_data_base64, prompt, seed, aspect_ratio })
-    .then(res => {
-      if (!res || !res.data || !res.data.task_id) throw new Error('提交任务失败');
-      const task_id = res.data.task_id;
-      let retry = 0;
-      return new Promise((resolve, reject) => {
-        function poll() {
-          queryImageToVideoTask({ task_id })
-            .then(r => {
-              if (r && r.data && r.data.status === 'done' && r.data.video_url) {
-                resolve(r.data.video_url);
-              } else if (retry++ < maxRetry) {
-                setTimeout(poll, interval);
-              } else {
-                reject(new Error('查询超时或未生成视频'));
-              }
-            })
-            .catch(reject);
+async function submitAndWaitForVideoUrl({ image_urls, binary_data_base64, prompt, seed, aspect_ratio, interval = 2000, maxRetry = 30 }) {
+  const res = await submitImageToVideoTask({ image_urls, binary_data_base64, prompt, seed, aspect_ratio });
+  if (!res || !res.data || !res.data.task_id) throw new Error('提交任务失败');
+  const task_id = res.data.task_id;
+  let retry = 0;
+  return new Promise((resolve, reject) => {
+    async function poll() {
+      try {
+        const r = await queryImageToVideoTask({ task_id });
+        if (r && r.data && r.data.status === 'done' && r.data.video_url) {
+          resolve(r.data.video_url);
+        } else if (retry++ < maxRetry) {
+          setTimeout(poll, interval);
+        } else {
+          reject(new Error('查询超时或未生成视频'));
         }
-        poll();
-      });
-    });
+      } catch (e) {
+        reject(e);
+      }
+    }
+    poll();
+  });
 }
 
-/**
- * 计算请求体的 SHA256 HEX
- * @param {string} payload
- * @returns {string}
- */
-function hashPayload(payload) {
-  return CryptoJS.SHA256(payload || '').toString(CryptoJS.enc.Hex);
+import { sign as jimengSign, sha256Hex, queryParamsToString } from './jimeng-sign.js';
+
+// 用Web Crypto API替代CryptoJS
+async function hashPayload(payload) {
+  return await sha256Hex(payload || '');
 }
 
-/**
- * 生成 CanonicalRequest
- * @param {Object} params
- * @param {string} method
- * @param {string} uri
- * @param {string} query
- * @param {Object} headers 参与签名的header对象（小写）
- * @param {string[]} signedHeaders 参与签名的header名数组（小写）
- * @param {string} payload
- * @returns {string}
- */
-function buildCanonicalRequest({ method, uri, query, headers, signedHeaders, payload }) {
+// buildCanonicalRequest改为异步，payload hash用await
+async function buildCanonicalRequest({ method, uri, query, headers, signedHeaders, payload }) {
+  // query应为对象，需排序、url编码
+  const queryStr = typeof query === 'string' ? query : queryParamsToString(query);
   const canonicalHeaders = signedHeaders
-    .map(h => h + ':' + (headers[h] || '').trim() + '\n')
+    .map(h => h.toLowerCase() + ':' + (headers[h] || '').trim() + '\n')
     .join('');
-  const signedHeadersStr = signedHeaders.join(';');
-  const hashedPayload = hashPayload(payload);
+  const signedHeadersStr = signedHeaders.map(h => h.toLowerCase()).join(';');
+  const hashedPayload = await hashPayload(payload);
   return [
     method.toUpperCase(),
     uri,
-    query,
+    queryStr,
     canonicalHeaders,
     signedHeadersStr,
     hashedPayload
   ].join('\n');
 }
 
-/**
- * 生成 Authorization 签名
- * @param {Object} params
- * @param {string} ak
- * @param {string} sk
- * @param {string} region
- * @param {string} service
- * @param {string} shortDate
- * @param {string} canonicalRequest
- * @param {string} signedHeadersStr
- * @returns {string}
- */
-function genVolcAuthorization({ ak, sk, region, service, shortDate, canonicalRequest, signedHeadersStr }) {
-  const signature = CryptoJS.HmacSHA256(canonicalRequest, sk).toString(CryptoJS.enc.Hex);
-  return [
-    'VolcEngineV1',
-    `AccessKeyId=${ak}`,
-    `Signature=${signature}`,
-    `Region=${region}`,
-    `Service=${service}`,
-    `SignedHeaders=${signedHeadersStr}`,
-    `ShortDate=${shortDate}`
-  ].join('/');
+// 替换genVolcAuthorization为异步签名
+async function genVolcAuthorization({ ak, sk, region, service, shortDate, canonicalRequest, signedHeadersStr }) {
+  const headers = {
+    'X-Date': shortDate,
+    'host': 'visual.volcengineapi.com',
+  };
+  const bodySha = await sha256Hex(canonicalRequest.split('\n').pop() || '');
+  const authorization = await jimengSign({
+    headers,
+    query: {},
+    region,
+    serviceName: service,
+    method: 'POST',
+    pathName: '/',
+    accessKeyId: ak,
+    secretAccessKey: sk,
+    needSignHeaderKeys: ['X-Date', 'host'],
+    bodySha
+  });
+  return authorization;
 }
 
 /**
@@ -256,35 +242,35 @@ function getShortDate() {
  * @param {string} [params.aspect_ratio] 图片比例，默认16:9
  * @returns {Promise<string>} 视频播放地址
  */
-function oneStepImageToVideo({ imageUrl, prompt, ak, sk, aspect_ratio = '16:9' }) {
-  return submitImageToVideoTask({
+async function oneStepImageToVideo({ imageUrl, prompt, ak, sk, aspect_ratio = '16:9' }) {
+  const res = await submitImageToVideoTask({
     image_urls: [imageUrl],
     prompt,
     aspect_ratio,
     ak,
     sk
-  }).then(res => {
-    if (!res || !res.data || !res.data.task_id) throw new Error('提交任务失败');
-    const task_id = res.data.task_id;
-    return new Promise((resolve, reject) => {
-      let retry = 0;
-      const maxRetry = 30;
-      const interval = 2000;
-      function poll() {
-        queryImageToVideoTask({ task_id, ak, sk })
-          .then(r => {
-            if (r && r.data && r.data.status === 'done' && r.data.video_url) {
-              resolve(r.data.video_url);
-            } else if (retry++ < maxRetry) {
-              setTimeout(poll, interval);
-            } else {
-              reject(new Error('查询超时或未生成视频'));
-            }
-          })
-          .catch(reject);
+  });
+  if (!res || !res.data || !res.data.task_id) throw new Error('提交任务失败');
+  const task_id = res.data.task_id;
+  return new Promise((resolve, reject) => {
+    let retry = 0;
+    const maxRetry = 30;
+    const interval = 2000;
+    async function poll() {
+      try {
+        const r = await queryImageToVideoTask({ task_id, ak, sk });
+        if (r && r.data && r.data.status === 'done' && r.data.video_url) {
+          resolve(r.data.video_url);
+        } else if (retry++ < maxRetry) {
+          setTimeout(poll, interval);
+        } else {
+          reject(new Error('查询超时或未生成视频'));
+        }
+      } catch (e) {
+        reject(e);
       }
-      poll();
-    });
+    }
+    poll();
   });
 }
 
