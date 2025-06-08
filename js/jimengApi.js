@@ -93,6 +93,62 @@ const JimengApi = {
         });
         const text = await resp.text();
         return { status: resp.status, body: text };
+    },
+    // 新增：图生视频简洁请求方法
+    async doImage2Video({ req_key, image_urls, prompt }) {
+        // 默认参数
+        const ak = 'AKLTMmU2NGQ5MjAzNmFlNDU3ODk4MjljMjI4YWI4MjExZTk';
+        const sk = 'TnpBek9USTJaV1l4TkRnM05Ea3lOemsxTVRWa1pUVXlNRGN3WTJZek5XTQ==';
+        const endpoint = 'visual.volcengineapi.com';
+        const path = '/';
+        const service = 'cv';
+        const region = 'cn-north-1';
+        const schema = 'https';
+        const action = 'CVSync2AsyncSubmitTask';
+        const version = '2022-08-31';
+        return await this.doRequest({
+            method: 'POST',
+            queryList: {},
+            body: { req_key, image_urls, prompt },
+            date: new Date(),
+            action,
+            version,
+            region,
+            service,
+            schema,
+            host: endpoint,
+            path,
+            ak,
+            sk
+        });
+    },
+    // 新增：查询进度简洁方法
+    async queryTaskProgress({ req_key, task_id }) {
+        // 默认参数
+        const ak = 'AKLTMmU2NGQ5MjAzNmFlNDU3ODk4MjljMjI4YWI4MjExZTk';
+        const sk = 'TnpBek9USTJaV1l4TkRnM05Ea3lOemsxTVRWa1pUVXlNRGN3WTJZek5XTQ==';
+        const endpoint = 'visual.volcengineapi.com';
+        const path = '/';
+        const service = 'cv';
+        const region = 'cn-north-1';
+        const schema = 'https';
+        const action = 'CVSync2AsyncGetResult';
+        const version = '2022-08-31';
+        return await this.doRequest({
+            method: 'POST',
+            queryList: {},
+            body: { req_key, task_id },
+            date: new Date(),
+            action,
+            version,
+            region,
+            service,
+            schema,
+            host: endpoint,
+            path,
+            ak,
+            sk
+        });
     }
 };
 
