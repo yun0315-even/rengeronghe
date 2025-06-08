@@ -1,0 +1,11 @@
+<view class="page-content" wx:if="{{currentPage === 3}}">
+  <view class="camera-container">
+    <camera device-position="front" flash="off" binderror="error" style="width: 100%; height: 100%;"></camera>
+    <canvas type="2d" id="gestureCanvas" class="gesture-canvas"></canvas>
+  </view>
+  <view class="gesture-text">随便画点什么：握拳绘制，开掌暂停绘制</view>
+  <view class="button-container">
+    <button class="action-button" bindtap="clearCanvas">清除</button>
+    <button class="action-button" bindtap="saveGestureImage">保存</button>
+  </view>
+</view> 

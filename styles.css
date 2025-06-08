@@ -597,10 +597,32 @@ button:hover ~ .custom-cursor,
     --background-opacity: 0.8;
 }
 
+.rational-style .personality-choice {
+    border-radius: 8px !important;
+    font-family: 'Noto Sans SC', sans-serif;
+}
+
+.rational-style .personality-choice h3,
+.rational-style .personality-choice p {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 500;
+}
+
 /* 感性风格 */
 .emotional-style {
     font-family: 'ZCOOL XiaoWei', serif;
     --background-opacity: 1;
+}
+
+.emotional-style .personality-choice {
+    border-radius: 200px !important;
+    font-family: 'ZCOOL XiaoWei', serif;
+}
+
+.emotional-style .personality-choice h3,
+.emotional-style .personality-choice p {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-weight: 400;
 }
 
 .emotional-style .contact-input,
@@ -1766,7 +1788,7 @@ canvas {
     width: 100%;
     height: 100%;
     pointer-events: none;
-}
+} 
 
 /* 手势识别页面样式 */
 .gesture-content {
@@ -1867,63 +1889,45 @@ canvas {
     animation: fadeIn 1.5s;
 }
 
-.fusion-messages .waiting {
-    display: inline-block;
-    font-weight: bold;
-    background: linear-gradient(90deg, #ffd700 30%, #fff 70%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: fusionWaiting 1.2s infinite linear;
-}
-
-@keyframes fusionWaiting {
-    0% { opacity: 1; letter-spacing: 2px; }
-    50% { opacity: 0.5; letter-spacing: 8px; }
-    100% { opacity: 1; letter-spacing: 2px; }
-}
-
-@media (max-width: 768px) {
-    .fusion-messages {
-        font-size: clamp(1.1rem, 4vw, 2rem);
-        padding: 0 0.5rem;
-    }
-}
-
-.fusion-view-btn-box {
-    display: flex;
-    justify-content: center;
-    margin-top: 2.5rem;
+.fusion-messages h3 {
+    font-size: clamp(0.8rem, 1.2vw, 1.2rem);
+    margin-top: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .fusion-view-btn {
-    font-family: 'Mochiy Pop One', 'Quicksand', sans-serif;
-    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: clamp(1.2rem, 4vw, 4rem);
+    background: linear-gradient(45deg, #FFB6C1, #87CEEB, #98FB98);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: unset;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2),
+                 0 0 40px rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.1em;
+    font-weight: normal;
     padding: 1.2rem 5rem;
-    background: linear-gradient(45deg, #ffd700, #fffbe0);
-    color: #333;
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    font-weight: bold;
     box-shadow: 0 8px 32px rgba(255, 215, 0, 0.18), 0 0 0 1px #fffbe0;
-    text-shadow: 0 2px 8px rgba(255,255,255,0.18);
-    letter-spacing: 4px;
     transition: all 0.3s;
     animation: buttonPulse 2s infinite;
     outline: none;
     margin: 0 auto;
     display: block;
-}
-
-.fusion-view-btn:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 12px 40px rgba(255, 215, 0, 0.28), 0 0 0 2px #fffbe0;
+    width: auto;
+    text-align: center;
 }
 
 @media (max-width: 768px) {
+    .fusion-messages h3 {
+        font-size: clamp(0.7rem, 1vw, 1rem);
+    }
+    
     .fusion-view-btn {
-        font-size: clamp(1.2rem, 6vw, 2.2rem);
+        font-size: clamp(1rem, 3vw, 1.8rem);
         padding: 0.8rem 2.5rem;
     }
 } 

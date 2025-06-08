@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人格融合</title>
+    <title>云心共绘</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.20/fullpage.min.css">
     <!-- 添加Font Awesome图标库 -->
@@ -48,34 +48,36 @@
             <div class="container">
                 <div class="content emotions-content">
                     <h2>选择你当前的情绪</h2>
+                    <h3>Please select your current emotion</h3>
                     <div class="emotions-grid">
                         <div class="emotion-card" data-emotion="happy">
                             <div class="emotion-icon">
                                 <i class="fas fa-smile-beam"></i>
                             </div>
-                            <p>开心</p>
+                            <p>Happy</p>
                         </div>
                         <div class="emotion-card" data-emotion="sad">
                             <div class="emotion-icon">
                                 <i class="fas fa-sad-tear"></i>
                             </div>
-                            <p>难过</p>
+                            <p>Sad</p>
                         </div>
                         <div class="emotion-card" data-emotion="angry">
                             <div class="emotion-icon">
                                 <i class="fas fa-angry"></i>
                             </div>
-                            <p>生气</p>
+                            <p>Angry</p>
                         </div>
                         <div class="emotion-card" data-emotion="blank">
                             <div class="emotion-icon">
                                 <i class="fas fa-meh-blank"></i>
                             </div>
-                            <p>发呆</p>
+                            <p>Daze</p>
                         </div>
                     </div>
                     <div class="fusion-progress">
                         <div class="progress-text">融合进度</div>
+                        <div class="progress-text">Integration progress</div>
                         <div class="progress-bar">
                             <div class="progress-fill"></div>
                         </div>
@@ -96,30 +98,32 @@
             <div class="container">
                 <div class="content personality-content">
                     <h2>选择你的性格特征</h2>
+                    <h3>Please select your personality traits</h3>
                     <p class="selection-guide">请在理性/感性中选择一个，在内向/外向中选择一个</p>
+                    <h3>Please select one from rational/emotional and one from introvert/outgoing</h3>
                     <div class="personality-grid">
                         <div class="personality-row">
                             <div class="personality-choice" data-type="rational" data-category="style">
                                 <div class="choice-icon">🧠</div>
                                 <h3>理性</h3>
-                                <p>逻辑思维，理性决策</p>
+                                <p>Rationality</p>
                             </div>
                             <div class="personality-choice" data-type="emotional" data-category="style">
                                 <div class="choice-icon">❤️</div>
                                 <h3>感性</h3>
-                                <p>感性思维，随心而动</p>
+                                <p>Sensibility</p>
                             </div>
                         </div>
                         <div class="personality-row">
                             <div class="personality-choice" data-type="introvert" data-category="social">
                                 <div class="choice-icon">🤔</div>
                                 <h3>内向</h3>
-                                <p>安静，独处时感到舒适</p>
+                                <p>Introvert</p>
                             </div>
                             <div class="personality-choice" data-type="extrovert" data-category="social">
                                 <div class="choice-icon">🎉</div>
                                 <h3>外向</h3>
-                                <p>活泼，享受社交互动</p>
+                                <p>Outgoing</p>
                             </div>
                         </div>
                     </div>
@@ -128,6 +132,7 @@
                     </div>
                     <div class="fusion-progress personality-progress">
                         <div class="progress-text">融合进度</div>
+                        <div class="progress-text">Integration progress</div>
                         <div class="progress-bar">
                             <div class="progress-fill"></div>
                         </div>
@@ -142,15 +147,19 @@
         <section class="section" data-anchor="section4">
             <div class="container">
                 <div class="content gesture-content">
-                    <h2>用手势绘制你的心情</h2>
+                    <h2>随便画点什么：握拳开始绘制，开掌暂停绘制</h2>
+                    <h3>Please draw something: Hold your fist to start drawing, open your hand to pause drawing</h3>
                     <div class="gesture-container">
                         <video id="input-video" class="input-video" playsinline></video>
                         <canvas id="output-canvas" class="output-canvas"></canvas>
                     </div>
                     <div class="gesture-controls">
                         <button id="clearCanvas" class="control-btn">清除画布</button>
+                        <h3>Please clear the canvas</h3>
                         <button id="toggleCamera" class="control-btn">切换摄像头</button>
+                        <h3>Please switch the camera</h3>
                         <button id="saveImage" class="control-btn">保存图片</button>
+                        <h3>Please save the image</h3>
                     </div>
                 </div>
             </div>
@@ -161,17 +170,25 @@
             <div class="container">
                 <div class="content fusion-content">
                     <h2>融合进度</h2>
+                    <h3>Integration progress</h3>
                     <div class="fusion-image-box">
                         <img id="fusionImage" src="" alt="融合图片" style="max-width: 320px; max-height: 240px; border-radius: 12px; display: none;" />
                     </div>
                     <div class="fusion-keywords" id="fusionKeywords" style="margin: 1rem 0; color: #ffd700;"></div>
                     <div class="fusion-messages" id="fusionMessages" style="text-align: left; margin: 2rem auto 0; max-width: 400px; min-height: 4.5em;">
                         <div id="msg1">已获取到轨迹会话</div>
+                        <h3>The trajectory session has been obtained</h3>
                         <div id="msg2">已发送融合请求</div>
+                        <h3>The fusion request has been sent</h3>
                         <div id="msg3" class="waiting">进行融合中...</div>
+                        <h3>The fusion is in progress</h3>
+                    </div>
+                    <div class="fusion-thank-message" style="margin-top: 1.5em; color: #666; font-size: 1.1em; text-align: center; display: none;" id="fusionThankMsg">
+                      感谢你的体验，这是你与AI共同绘制的的专属画作视频，展现了你们的风格融合。
+                      <h3>Thank you for your experience, this is a unique video of your fusion with AI, showcasing your style fusion.</h3>
                     </div>
                     <div class="fusion-view-btn-box">
-                        <button id="fusionViewBtn" class="fusion-view-btn" style="display:none;">查 看</button>
+                        <button id="fusionViewBtn" class="fusion-view-btn" style="display:none;">Enjoy</button>
                     </div>
                 </div>
             </div>

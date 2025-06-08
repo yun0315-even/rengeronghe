@@ -316,7 +316,7 @@ class HandDrawingManager {
                         // 调用千问3图片解析，生成即梦关键词
                         try {
                             const { default: qianwen3ImageParse } = await import('./js/qianwen3.js');
-                            const keywords = await qianwen3ImageParse(url, '请用5个词描述这幅画的梦境关键词');
+                            const keywords = await qianwen3ImageParse(url, '请根据用户随机绘制的路径进行联想与想象，将路径联想为一个与其相似的动物或植物或其他物体，并将路径演化想象为一个具象的场景，随后根据生成的场景生成一段即梦AI关键词');
                             this.dreamKeywords = keywords;
                             console.log('即梦关键词：' + keywords);
                             // 调用即梦API，生成视频
