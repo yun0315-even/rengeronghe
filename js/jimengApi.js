@@ -154,38 +154,3 @@ const JimengApi = {
 
 // 可通过 window.JimengApi 访问
 window.JimengApi = JimengApi;
-
-// 示例调用
-(async () => {
-    const AccessKeyID = 'AK*****';
-    const SecretAccessKey = '******==';
-    const endpoint = 'visual.volcengineapi.com';
-    const path = '/';
-    const service = 'cv';
-    const region = 'cn-north-1';
-    const schema = 'https';
-    const action = 'CVProcess';
-    const version = '2022-08-31';
-
-    const reqBody = {
-        req_key: 'xxx',
-        image_urls: ['******'],
-        prompt: '******'
-    };
-
-    await JimengApi.doRequest({
-        method: 'POST',
-        queryList: {},
-        body: reqBody,
-        date: new Date(),
-        action,
-        version,
-        region,
-        service,
-        schema,
-        host: endpoint,
-        path,
-        ak: AccessKeyID,
-        sk: SecretAccessKey
-    });
-})(); 
