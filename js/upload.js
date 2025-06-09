@@ -4,7 +4,7 @@
  * @returns {Promise<Object>} 响应数据
  */
 export async function uploadFile(file) {
-  const url = 'http://yjzb.ylswsoft.com/emergency-api/platform/screen/upload';
+  const url = 'https://yxgh.rundasoft.cn/api/platform/screen/upload';
   const formData = new FormData();
   formData.append('file', file);
 
