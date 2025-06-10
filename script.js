@@ -919,6 +919,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const keywords = kwBox ? kwBox.value : '';
         console.log('即梦关键词：' + keywords);
         if(keywords) {
+            // 检查并处理关键词
+            let displayKeywords = keywords;
+            const flag = '即梦AI图生视频描述词';
+            const idx = keywords.indexOf(flag);
+            if (idx !== -1) {
+                displayKeywords = keywords.substring(idx + flag.length).trim();
+            }
+            console.log('即梦截取关键词：' + displayKeywords);
             const giftBox = document.querySelector('.gift-box');
             const giftImg = document.getElementById('giftBoxImg');
             const giftTip = document.querySelector('.gift-tip');
@@ -928,7 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Change the image to envelope
             giftImg.src = 'xinfeng.jpg';
-            setShowKeywords(keywords);
+            setShowKeywords(displayKeywords);
             // Update the text
             giftTip.innerHTML = `
                 <div style="font-size: 1.8rem; margin-bottom: 1rem;">你在画，它在跟；你在引，它在生。</div>
