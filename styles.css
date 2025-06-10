@@ -1150,21 +1150,29 @@ button:hover ~ .custom-cursor,
 
 .full-content .subtitle {
     font-family: 'Mochiy Pop One', sans-serif;
-    font-size: clamp(1.5rem, 4vw, 4rem);
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
     margin: 1rem 0 2rem 0;
     background: linear-gradient(45deg, #FFB6C1, #87CEEB);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 
-        0 0 10px rgba(255, 255, 255, 0.2),
-        0 0 20px rgba(255, 255, 255, 0.2);
-    letter-spacing: 0.2em;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2), 0 0 20px rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.1em;
     animation: subtitleFloat 3s ease-in-out infinite 0.5s;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    word-wrap: normal;
+    overflow-wrap: normal;
     max-width: 100%;
     padding: 0 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    .full-content .subtitle {
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        padding: 0 0.5rem;
+    }
 }
 
 /* 添加浮动动画 */
@@ -2258,5 +2266,115 @@ canvas {
     .gift-tip {
         font-size: 1rem;
     }
+}
+
+/* 让第三页内容完整显示 */
+.section[data-anchor="section3"] .container {
+    height: auto;
+    min-height: 100vh;
+    display: block;
+    padding: 3vh 0;
+}
+
+.section[data-anchor="section3"] .personality-content {
+    padding: 2rem 1rem;
+    margin: 0 auto;
+    max-width: 900px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .section[data-anchor="section3"] .personality-content {
+        padding: 1rem 0.2rem;
+    }
+}
+
+.yun-logo {
+    display: inline-block;
+    vertical-align: middle;
+    width: 140px;
+    height: 140px;
+    margin-left: 1.5rem;
+    filter: drop-shadow(0 0 40px #fffbe0) drop-shadow(0 0 80px #ffd700);
+    animation: yunSwing 2.5s infinite ease-in-out;
+}
+
+@keyframes yunSwing {
+    0%, 100% {
+        transform: translateY(0) rotate(-8deg) scale(1.08);
+    }
+    50% {
+        transform: translateY(-8px) rotate(8deg) scale(1.15);
+    }
+}
+
+@media (max-width: 768px) {
+    .yun-logo {
+        width: 90px;
+        height: 90px;
+        margin-left: 1rem;
+    }
+}
+
+.firefly-container {
+    position: fixed;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.firefly {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fffbe0 60%, #ffd700 100%, transparent 100%);
+    box-shadow: 0 0 4px 2px #fffbe0, 0 0 8px 4px #ffd700;
+    opacity: 0.8;
+    animation: fireflyMove 8s linear infinite, fireflyGlow 2s ease-in-out infinite;
+}
+
+@keyframes fireflyMove {
+    0% {
+        transform: translateY(0) translateX(0) scale(1);
+    }
+    20% {
+        transform: translateY(-30px) translateX(20px) scale(1.1);
+    }
+    40% {
+        transform: translateY(10px) translateX(-20px) scale(0.9);
+    }
+    60% {
+        transform: translateY(-20px) translateX(30px) scale(1.2);
+    }
+    80% {
+        transform: translateY(20px) translateX(-30px) scale(1);
+    }
+    100% {
+        transform: translateY(0) translateX(0) scale(1);
+    }
+}
+
+@keyframes fireflyGlow {
+    0%, 100% { opacity: 0.7; box-shadow: 0 0 4px 2px #fffbe0, 0 0 8px 4px #ffd700; }
+    50% { opacity: 1; box-shadow: 0 0 8px 4px #fffbe0, 0 0 12px 6px #ffd700; }
+}
+
+.fusion-stars {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1.2rem 0 1.2rem 0;
+    font-size: 2.1rem;
+    gap: 0.5rem;
+}
+.fusion-stars .fa-star {
+    color: #bbb;
+    transition: color 0.3s;
+    filter: drop-shadow(0 0 2px #fffbe0);
+}
+.fusion-stars .fa-star.lit {
+    color: #ffd700;
+    filter: drop-shadow(0 0 6px #ffd700);
 }
 } 

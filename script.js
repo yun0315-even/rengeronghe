@@ -728,10 +728,79 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // section5进度与提示逻辑
+    // 融合进度部分
     let fusionTaskId = null;
     let fusionReqKey = null;
     let fusionPollingTimer = null;
+    let starInterval = null;
+
+    function createFusionStar() {
+        const container = document.getElementById('fusionStars');
+        if (!container) return;
+
+        const star = document.createElement('div');
+        star.className = 'fusion-star';
+        
+        // 随机位置
+        const startX = Math.random() * window.innerWidth;
+        star.style.left = `${startX}px`;
+        star.style.bottom = '-30px';
+        
+        // 随机大小
+        const size = 20 + Math.random() * 20;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        
+        // 随机动画延迟
+        star.style.animationDelay = `${Math.random() * 2}s`;
+        
+        // 添加发光效果
+        star.classList.add('glowing');
+        
+        container.appendChild(star);
+        
+        // 动画结束后移除星星
+        star.addEventListener('animationend', () => {
+            star.remove();
+        });
+    }
+
+    function startFusionStars() {
+        // 确保只在section5显示
+        const currentSection = document.querySelector('.section.active');
+        if (!currentSection || currentSection.getAttribute('data-anchor') !== 'section5') {
+            return;
+        }
+
+        // 清除现有的星星生成器
+        if (starInterval) {
+            clearInterval(starInterval);
+        }
+        
+        // 每300ms生成一个新的星星
+        starInterval = setInterval(createFusionStar, 300);
+    }
+
+    function stopFusionStars() {
+        if (starInterval) {
+            clearInterval(starInterval);
+            starInterval = null;
+        }
+        // 清除所有现有的星星
+        const container = document.getElementById('fusionStars');
+        if (container) {
+            container.innerHTML = '';
+        }
+    }
+
+    // 监听页面切换事件
+    document.addEventListener('fullpage:afterLoad', function(event) {
+        if (event.detail.destination.index === 4) { // 当进入section5时
+            startFusionStars();
+        } else {
+            stopFusionStars();
+        }
+    });
 
     function showFusionSection({ imageUrl }) {
         // 只展示图片
@@ -740,6 +809,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (img && imageUrl) {
             img.src = imageUrl;
             img.style.display = 'block';
+            // 开始生成星星
+            startFusionStars();
         }
     }
 
@@ -753,6 +824,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.status === 'done') {
                 document.getElementById('msg3').textContent = '融合完成';
                 clearInterval(fusionPollingTimer);
+                // 融合完成时停止生成星星
+                stopFusionStars();
             } else {
                 document.getElementById('msg3').textContent = '进行融合中...';
             }
@@ -879,4 +952,112 @@ document.addEventListener('DOMContentLoaded', () => {
             startListening(); // 用户点击后才开始语音识别
         });
     }
+
+    // 生成萤火虫
+    function createFireflies(num = 20) {
+        const container = document.querySelector('.firefly-container');
+        if (!container) return;
+        for (let i = 0; i < num; i++) {
+            const firefly = document.createElement('div');
+            firefly.className = 'firefly';
+            // 随机初始位置
+            firefly.style.top = Math.random() * 90 + 'vh';
+            firefly.style.left = Math.random() * 100 + 'vw';
+            // 随机动画延迟和时长
+            firefly.style.animationDelay = `${Math.random() * 8}s, ${Math.random() * 2}s`;
+            firefly.style.animationDuration = `${6 + Math.random() * 6}s, 2s`;
+            container.appendChild(firefly);
+        }
+    }
+    createFireflies(8);
+
+    // 云朵动画处理
+    class CloudAnimationManager {
+        constructor() {
+            this.cloud = document.querySelector('.global-cloud');
+            this.message = document.querySelector('.cloud-message');
+            this.currentSize = 1;
+            this.initCloud();
+            this.setupEventListeners();
+        }
+
+        initCloud() {
+            this.cloud.style.setProperty('--current-scale', '1');
+            // 初始显示消息
+            setTimeout(() => {
+                this.message.classList.add('show');
+            }, 1000);
+        }
+
+        setupEventListeners() {
+            // 点击事件监听
+            document.addEventListener('click', (e) => {
+                this.growCloud();
+            });
+
+            // 监听手绘事件
+            if (window.handDrawingManager) {
+                window.handDrawingManager.onDrawingComplete = () => {
+                    this.growCloud();
+                };
+            }
+
+            // 监听语音识别事件
+            document.getElementById('startVoiceBtn')?.addEventListener('click', () => {
+                this.growCloud();
+            });
+
+            // 监听页面切换事件
+            document.addEventListener('fullpage:afterLoad', () => {
+                // 确保云朵和消息在页面切换时保持可见
+                this.cloud.style.display = 'block';
+                this.message.style.display = 'block';
+            });
+        }
+
+        growCloud() {
+            // 增加当前尺寸
+            this.currentSize += 0.1;
+            
+            // 更新CSS变量以实现累积缩放
+            this.cloud.style.setProperty('--current-scale', this.currentSize.toString());
+
+            // 添加生长动画
+            this.cloud.classList.add('growing');
+            setTimeout(() => {
+                this.cloud.classList.remove('growing');
+            }, 500);
+
+            // 如果达到特定大小，添加发光效果
+            if (this.currentSize >= 1.5) {
+                this.cloud.classList.add('glowing');
+            }
+
+            // 如果云朵变得太大，调整其位置
+            if (this.currentSize > 3) {
+                this.cloud.style.bottom = '50%';
+                this.cloud.style.transform = `translate(-50%, 50%) scale(${this.currentSize})`;
+                // 调整消息位置
+                this.message.style.bottom = 'calc(50% - 40px)';
+            } else {
+                this.cloud.style.transform = `translateX(-50%) scale(${this.currentSize})`;
+                // 重置消息位置
+                this.message.style.bottom = '5px';
+            }
+
+            // 如果云朵变得非常大，增加其透明度
+            if (this.currentSize > 5) {
+                this.cloud.style.opacity = '0.6';
+                this.message.style.opacity = '0.6';
+            }
+
+            // 显示消息动画
+            this.message.classList.remove('show');
+            void this.message.offsetWidth; // 触发重排
+            this.message.classList.add('show');
+        }
+    }
+
+    // 初始化云朵动画管理器
+    window.cloudAnimationManager = new CloudAnimationManager();
 }); 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>云心共绘</title>
+    <title>云听我画</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.20/fullpage.min.css">
     <!-- 添加Font Awesome图标库 -->
@@ -11,8 +11,198 @@
     <!-- 添加Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+XiaoWei&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+    <style>
+        .global-cloud {
+            position: fixed;
+            bottom: 20px;
+            left: 40px;
+            right: auto;
+            transform: none;
+            width: 100px;
+            height: 60px;
+            background-image: url('yun.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.8;
+            transition: transform 0.3s ease;
+            filter: brightness(1);
+            z-index: 9999;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .cloud-message {
+            position: fixed;
+            bottom: 5px;
+            left: 40px;
+            right: auto;
+            transform: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            text-align: center;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            font-family: 'ZCOOL XiaoWei', sans-serif;
+        }
+
+        .cloud-message.show {
+            opacity: 1;
+            animation: floatMessage 2s ease-in-out infinite;
+        }
+
+        @keyframes floatMessage {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .global-cloud.growing {
+            animation: growCloud 0.5s ease forwards;
+        }
+
+        .global-cloud.glowing {
+            animation: glowCloud 1s ease infinite;
+        }
+
+        @keyframes growCloud {
+            0% { transform: translateX(-50%) scale(var(--current-scale, 1)); }
+            50% { transform: translateX(-50%) scale(calc(var(--current-scale, 1) * 1.2)); }
+            100% { transform: translateX(-50%) scale(var(--current-scale, 1)); }
+        }
+
+        @keyframes glowCloud {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+            100% { filter: brightness(1); }
+        }
+
+        .fusion-stars-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .fusion-star {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-image: url('xingxing.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0;
+            filter: brightness(1);
+            animation: starFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes starFloat {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes starGlow {
+            0%, 100% {
+                filter: brightness(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+            }
+            50% {
+                filter: brightness(1.5) drop-shadow(0 0 15px rgba(255, 255, 255, 1));
+            }
+        }
+
+        .fusion-star.glowing {
+            animation: starFloat 3s ease-in-out infinite,
+                       starGlow 2s ease-in-out infinite;
+        }
+
+        .gift-voice-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: -1.5rem;
+        }
+
+        #envelopeMessage {
+            font-family: 'ZCOOL QingKe HuangYou', 'Comic Sans MS', 'cursive', sans-serif;
+            font-size: 1.6rem;
+            color: #ffb6c1;
+            text-align: center;
+            max-width: 80%;
+            line-height: 1.7;
+            letter-spacing: 1.5px;
+            word-break: break-all;
+            text-shadow: 0 2px 8px rgba(255, 192, 203, 0.18);
+            background: rgba(255,255,255,0.15);
+            border-radius: 18px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 18px rgba(255,192,203,0.08);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        #envelopeMessage.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        @keyframes writeText {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        .writing-animation {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #ffb6c1;
+            animation: writeText 2s steps(40) forwards;
+            position: relative;
+            z-index: 9999;
+        }
+
+        .gift-box {
+            position: relative;
+            z-index: 1;
+        }
+
+        .gift-content {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
+    <div class="firefly-container"></div>
     <!-- 音频元素 -->
     <audio id="bgMusic" preload="auto">
         <source src="baizaoyin.mp3" type="audio/mpeg">
@@ -31,13 +221,17 @@
     <!-- 情绪颜色叠加层 -->
     <div class="emotion-overlay"></div>
 
+    <!-- 全局云朵 -->
+    <div class="global-cloud"></div>
+    <div class="cloud-message">你刚刚的选择，正在帮助云朵慢慢长大哦！</div>
+
     <div id="fullpage">
         <!-- 首页部分 -->
         <section class="section" data-anchor="section1">
             <div class="container full-container">
                 <div class="content full-content">
-                    <h1 class="title">云心共绘</h1>
-                    <p class="subtitle">HEARTCLOUD</p>
+                    <h1 class="title">云听我画<img src="yun.jpg" alt="云" class="yun-logo"></h1>
+                    <p class="subtitle">CLOUD LISTEN TO ME DRAW</p>
                     <button class="start-btn" id="startBtn">START</button>
                 </div>
             </div>
@@ -47,8 +241,8 @@
         <section class="section" data-anchor="section2">
             <div class="container">
                 <div class="content emotions-content">
-                    <h2>选择你当前的情绪</h2>
-                    <h3>Please select your current emotion</h3>
+                    <h2>你现在更像哪个表情？</h2>
+                    <h3>Which expression do you most resemble?</h3>
                     <div class="emotions-grid">
                         <div class="emotion-card" data-emotion="happy">
                             <div class="emotion-icon">
@@ -75,14 +269,7 @@
                             <p>Daze</p>
                         </div>
                     </div>
-                    <div class="fusion-progress">
-                        <div class="progress-text">融合进度</div>
-                        <div class="progress-text">Integration progress</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
-                        </div>
-                        <div class="progress-percentage">0%</div>
-                    </div>
+                    <div class="fusion-stars" id="fusionStars2"></div>
                     <div class="next-btn-container">
                         <button class="next-btn" id="emotionNextBtn" disabled>NEXT</button>
                         <div class="emotion-arrow">
@@ -97,46 +284,39 @@
         <section class="section" data-anchor="section3">
             <div class="container">
                 <div class="content personality-content">
-                    <h2>选择你的性格特征</h2>
-                    <h3>Please select your personality traits</h3>
-                    <p class="selection-guide">请在理性/感性中选择一个，在内向/外向中选择一个</p>
-                    <h3>Please select one from rational/emotional and one from introvert/outgoing</h3>
+                    <h2>你更像哪种小动物</h2>
+                    <h3>Which animal do you most resemble?</h3>
                     <div class="personality-grid">
                         <div class="personality-row">
                             <div class="personality-choice" data-type="rational" data-category="style">
-                                <div class="choice-icon">🧠</div>
-                                <h3>理性</h3>
-                                <p>Rationality</p>
+                                <div class="choice-icon">🐱</div>
+                                <h3>一只安静想事情的小猫</h3>
+                                <p>A quiet cat thinking about things</p>
                             </div>
                             <div class="personality-choice" data-type="emotional" data-category="style">
-                                <div class="choice-icon">❤️</div>
-                                <h3>感性</h3>
-                                <p>Sensibility</p>
+                                <div class="choice-icon">🦄</div>
+                                <h3>一只爱做梦、常常画画的小独角兽</h3>
+                                <p>A unicorn that loves to dream and often draws</p>
                             </div>
                         </div>
+                        <h2 class="personality-row-tip" style="text-align:center;color:#fff;margin:1.5rem 0 0.5rem 0;">你更喜欢的时光是？</h2>
+                        <h3>Which time do you prefer?</h3>
                         <div class="personality-row">
                             <div class="personality-choice" data-type="introvert" data-category="social">
-                                <div class="choice-icon">🤔</div>
-                                <h3>内向</h3>
-                                <p>Introvert</p>
+                                <div class="choice-icon">🌙</div>
+                                <h3>一个人画画、听音乐或看星星</h3>
+                                <p>Drawing alone, listening to music, or watching stars</p>
                             </div>
                             <div class="personality-choice" data-type="extrovert" data-category="social">
                                 <div class="choice-icon">🎉</div>
-                                <h3>外向</h3>
-                                <p>Outgoing</p>
+                                <h3>跟朋友一起跑跳玩耍</h3>
+                                <p>Running and playing with friends</p>
                             </div>
                         </div>
                     </div>
+                    <div class="fusion-stars" id="fusionStars3"></div>
                     <div class="selected-traits">
                         <p>已选择：<span id="selectedTraits">未选择</span></p>
-                    </div>
-                    <div class="fusion-progress personality-progress">
-                        <div class="progress-text">融合进度</div>
-                        <div class="progress-text">Integration progress</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
-                        </div>
-                        <div class="progress-percentage">25%</div>
                     </div>
                     <button class="next-btn" id="personalityNextBtn" disabled>NEXT</button>
                 </div>
@@ -171,6 +351,7 @@
                 <div class="content fusion-content">
                     <h2>融合进度</h2>
                     <h3>Integration progress</h3>
+                    <div class="fusion-stars-container" id="fusionStars"></div>
                     <div class="fusion-image-box">
                         <img id="fusionImage" src="" alt="融合图片" style="max-width: 320px; max-height: 240px; border-radius: 12px; display: none;" />
                     </div>
@@ -224,9 +405,12 @@
                             <div class="particle"></div>
                         </div>
                         <img id="giftBoxImg" src="liwu.jpg" alt="礼物盒子" class="gift-img">
+                        <div id="envelopeMessage"></div>
                     </div>
-                    <div class="gift-tip" style="margin-top:2rem;color:#ffffff;font-size:1.5rem;">请说 please say：打开礼物盒 Open the gift</div>
-                    <button id="startVoiceBtn" class="start-btn" style="margin-top: 1rem;">启用语音识别</button>
+                    <div class="gift-voice-group">
+                        <div class="gift-tip" style="margin-top:2rem;color:#ffffff;font-size:1.5rem;">请说 please say：打开礼物盒 Open the gift</div>
+                        <button id="startVoiceBtn" class="start-btn" style="margin-top: 1rem;">启用语音识别</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -329,30 +513,39 @@
             <div style="font-size: 1.2rem; color: rgba(255,255,255,0.8);">(信封中的话，是AI依据你刚才绘制的路径联想生成的。)</div>
             <div style="font-size: 1.2rem; margin-top: 1rem;">As you draw, it follows; As you guide, it creates.</div>
             <div style="font-size: 1rem; color: rgba(255,255,255,0.8);">(The words in the envelope are generated by AI based on your drawing path.)</div>
-            <div id="envelopeKeywords" style="margin-top:2rem;font-size:1.5rem;color:#ffd700;">AI关键词生成中...</div>
         `;
         
-        // Add envelope-specific animations
-        giftBox.classList.add('envelope-transformed');
+        // 随机温暖语句
+        const cuteMessages = [
+            "你的线条好像在跳舞，我听见它在唱歌。",
+            "你今天画得特别特别温柔，我想抱抱你。",
+            "你画的点像星星，我们一起把它们点亮。"
+        ];
+        const msg = cuteMessages[Math.floor(Math.random() * cuteMessages.length)];
+        
+        // 添加书写动画效果
+        setTimeout(() => {
+            const msgDiv = document.getElementById('envelopeMessage');
+            console.log('envelopeMessage div:', msgDiv); // 调试输出
+            if (msgDiv) {
+                msgDiv.innerHTML = `<span class="writing-animation">${msg}</span>`;
+                msgDiv.classList.add('show');
+                msgDiv.style.display = 'block';
+                msgDiv.style.zIndex = 99999;
+            } else {
+                alert('envelopeMessage 没找到！');
+            }
+        }, 100);
+    }
 
-        // 异步获取AI关键词
-        fetch('/api/qianwen-keywords')
-            .then(res => res.json())
-            .then(data => {
-                const kwDiv = document.getElementById('envelopeKeywords');
-                if (kwDiv) {
-                    if (data.keywords && data.keywords.length > 0) {
-                        kwDiv.innerHTML = data.keywords.map(k => `<span style="margin:0 0.5em;">${k}</span>`).join('');
-                    } else {
-                        kwDiv.textContent = '未获取到AI关键词';
-                    }
-                }
-            })
-            .catch(() => {
-                const kwDiv = document.getElementById('envelopeKeywords');
-                if (kwDiv) kwDiv.textContent = 'AI关键词获取失败';
-            });
+    const msg = "测试：你的线条好像在跳舞，我听见它在唱歌。";
+    const msgDiv = document.getElementById('envelopeMessage');
+    if (msgDiv) {
+        msgDiv.innerHTML = `<span class="writing-animation">${msg}</span>`;
+        msgDiv.classList.add('show');
+        msgDiv.style.display = 'block';
+        msgDiv.style.zIndex = 99999;
     }
     </script>
 </body>
-</html> 
+</html>
