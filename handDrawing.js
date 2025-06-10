@@ -320,7 +320,7 @@ class HandDrawingManager {
                             let lastError;
                             for (let i = 0; i < 5; i++) {
                                 try {
-                                    keywords = await qianwen3ImageParse(url, '请根据用户随机绘制的路径进行联想与想象，将路径联想为一个与其相似的动物或植物或其他物体，并将路径演化想象为一个具象的场景，随后根据生成的场景生成一段即梦AI关键词');
+                                    keywords = await qianwen3ImageParse(url, '请根据用户随机绘制的路径进行联想与想象，将路径联想为一个与其相似的动物或植物或其他物体，并将路径演化想象为一个具象的场景，随后根据生成的场景生成150字以内的即梦AI图生视频描述词，不要其他任何多余描述');
                                     break;
                                 } catch (err) {
                                     lastError = err;
