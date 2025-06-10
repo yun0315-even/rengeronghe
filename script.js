@@ -847,7 +847,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Change the image to envelope
         giftImg.src = 'xinfeng.jpg';
-        
+        const kwBox = document.getElementById('qianwen-keywords-box');
+        const keywords = kwBox ? kwBox.value : '';
+        console.log('即梦关键词：' + keywords);
         // Update the text
         giftTip.innerHTML = `
             <div style="font-size: 1.8rem; margin-bottom: 1rem;">你在画，它在跟；你在引，它在生。</div>
