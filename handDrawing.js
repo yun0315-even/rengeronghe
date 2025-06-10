@@ -329,6 +329,8 @@ class HandDrawingManager {
                                 }
                             }
                             this.dreamKeywords = keywords;
+                            const kwBox = document.getElementById('qianwen-keywords-box');
+                            if (kwBox) kwBox.value = keywords;
                             console.log('即梦关键词：' + keywords);
                             // 调用即梦API，生成视频
                             try {
